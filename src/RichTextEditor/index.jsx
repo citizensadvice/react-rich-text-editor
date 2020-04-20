@@ -10,10 +10,11 @@ import { onLinkPaste, renderInline } from './link';
 import { renderMark, renderBlock } from './utils';
 
 import initialValue from './value.json';
-import EditorLinkModal from './components/EditorLinkModal';
+// import EditorLinkModal from './components/EditorLinkModal';
 import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar';
-import LabelledTextarea from '../LabelledTextarea';
+// import LabelledTextarea from '../LabelledTextarea';
+import './index.scss';
 
 class LabelledRichTextEditor extends React.Component {
   containerRef = React.createRef();
@@ -247,7 +248,17 @@ class LabelledRichTextEditor extends React.Component {
             />
           </div>
         </div>
-        <LabelledTextarea
+        {/* <LabelledTextarea
+          className="rte_hidden_textarea"
+          required
+          aria-invalid={isInvalid}
+          hideLabel
+          label="textarea"
+          id={`hidden_textarea_for_${id}`}
+          value={text}
+          tabIndex="-1"
+        /> */}
+        <textarea
           className="rte_hidden_textarea"
           required
           aria-invalid={isInvalid}
