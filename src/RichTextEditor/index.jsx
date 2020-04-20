@@ -196,7 +196,7 @@ class LabelledRichTextEditor extends React.Component {
     const { isFocused, isInvalid, isFullScreen, value, modalIsOpen } = this.state;
     const { editor } = this;
     const { text } = value.document;
-    const { id } = this.props;
+    const { label, id } = this.props;
     const rteClass = classNames({
       'rte-form-control is-focused': isFocused,
       'rte-form-control is-invalid': isInvalid,
@@ -214,7 +214,9 @@ class LabelledRichTextEditor extends React.Component {
           <div>modal open</div>
         )}
 
-        <EditorLabel {...this.props} />
+        {label && (
+          <EditorLabel {...this.props} />
+        )}
 
         <div className="notes">
           <div
@@ -289,6 +291,7 @@ LabelledRichTextEditor.propTypes = {
 
 LabelledRichTextEditor.defaultProps = {
   required: true,
+  label: 'Rich Text Editor: '
 };
 
 export default LabelledRichTextEditor;

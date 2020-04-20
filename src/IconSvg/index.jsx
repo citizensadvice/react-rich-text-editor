@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './index.scss';
 
 const IconSvg = ({ icons, name, className, ...props }) => {
   if (!name) return null;

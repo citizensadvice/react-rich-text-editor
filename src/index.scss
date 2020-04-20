@@ -1,5 +1,25 @@
 @import './variables.scss';
 
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  line-height: normal;
+  overflow-wrap: break-word;
+  margin: 0;
+  font-family: "Open sans", sans-serif;
+  font-size: 0.875rem;
+
+  // Prevents the page jumping if the length of the page increases
+  overflow-y: scroll;
+
+  &.no-scroll {
+    overflow: hidden;
+  }
+}
+
 input,
 select,
 textarea {
