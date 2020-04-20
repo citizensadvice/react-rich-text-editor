@@ -1,14 +1,29 @@
 {
-  "name": "react-rich-text-editor",
+  "name": "citizensadvice.react-rich-text-editor",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@slate-editor/alignment-plugin": "^5.1.0",
+    "@slate-editor/bold-plugin": "^5.1.0",
+    "@slate-editor/italic-plugin": "^5.1.0",
+    "@slate-editor/link-plugin": "^5.1.0",
+    "@slate-editor/list-plugin": "^5.1.0",
+    "@slate-editor/strikethrough-plugin": "^5.1.0",
+    "@slate-editor/underline-plugin": "^5.1.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "classnames": "^2.2.6",
+    "is-hotkey": "^0.1.4",
+    "lodash-es": "^4.17.15",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "react-scripts": "3.4.1",
+    "slate": "^0.47.8",
+    "slate-editor": "^5.1.1",
+    "slate-plain-serializer": "^0.7.11",
+    "slate-react": "^0.22.4"
   },
   "scripts": {
     "start": "react-scripts start",
