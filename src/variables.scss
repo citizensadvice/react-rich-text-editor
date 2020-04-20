@@ -4,12 +4,17 @@ $color-black-l85: lighten($color-black, 85%);
 $color-black-l80: lighten($color-black, 80%);
 $color-black-l70: lighten($color-black, 70%);
 $color-black-l60: lighten($color-black, 60%);
+$color-black-l40: lighten($color-black, 40%);
 $color-black-l20: lighten($color-black, 20%);
+$body-color: $color-black-l40;
 $color-white: #fff;
 $color-cloudy: #a5c3cf;
 $color-lavender: #bd10e0;
 $color-tomato: #e32222;
+$color-tomato-d10: darken($color-tomato, 10%);
 $color-squash: #f5a623;
+
+$h2-font-size: rem(24);
 
 
 $px1: 1px;
