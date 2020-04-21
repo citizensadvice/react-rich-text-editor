@@ -4,26 +4,36 @@ import classNames from 'classnames';
 
 import { Editor } from 'slate-react';
 import Plain from 'slate-plain-serializer';
+
 import { Value } from 'slate';
 import { IS_BOLD_HOTKEY, IS_ITALIC_HOTKEY, IS_UNDERLINED_HOTKEY } from './constants';
 import { onLinkPaste, renderInline } from './link';
 import { renderMark, renderBlock } from './utils';
-
 import initialValue from './value.json';
+
 // import EditorLinkModal from './components/EditorLinkModal';
 import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar';
 // import LabelledTextarea from '../LabelledTextarea';
 import './index.scss';
 
+
+const initialValue1 = Value.fromJSON(initialValue);
+const initialValue2 = Value.fromJSON(initialValue);
+
 class LabelledRichTextEditor extends React.Component {
   containerRef = React.createRef();
+  editor1 = React.createRef();
+  editor2 = React.createRef();
 
   constructor(props) {
     super(props);
     this.state = {
       // convert plain text into immutable object that the editor accepts as value
-      value: this.props.edit ? Plain.deserialize(this.props.summaryText) : Value.fromJSON(initialValue),
+      // we must have different values for each editor instace
+      value1: this.props.edit ? Plain.deserialize(this.props.text) : Value.fromJSON(initialValue1),
+      value2: this.props.edit ? Plain.deserialize(this.props.text) : Value.fromJSON(initialValue2),
+      activeEditor: 1,
       isFocused: false,
       isInvalid: false,
       isFullScreen: false,
@@ -40,8 +50,12 @@ class LabelledRichTextEditor extends React.Component {
     document.removeEventListener('mousedown', this.handleClickInAndOut);
   }
 
-  ref = (editor) => {
-    this.editor = editor;
+  ref1 = (editor1) => {
+    this.editor1 = editor1;
+  }
+
+  ref2 = (editor2) => {
+    this.editor2 = editor2;
   }
 
   handlingStateFromChild = (newState) => {
@@ -66,8 +80,13 @@ class LabelledRichTextEditor extends React.Component {
     }
   }
 
-  handleEditorChange = ({ value }) => {
-    this.setState({ value }, () => this.onEditorChange(value));
+  handleEditorChange = (key, { value }) => {
+    const { value1, value2 } = this.state;
+    if (key === 1) {
+      this.setState({ value1: value }, () => this.onEditorChange(value1));
+    } else if (key === 2) {
+      this.setState({ value2: value }, () => this.onEditorChange(value2));
+    } this.setState({ activeEditor: key });
   }
 
   validateEditor = (text) => {
@@ -86,7 +105,13 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   checkIfNeedsValidation = () => {
-    const { text } = this.editor.value.document;
+    const { activeEditor } = this.state;
+    let text;
+    if (activeEditor === 1) {
+      text = this.editor1.value.document.text;
+    } else if (activeEditor === 2) {
+      text = this.editor1.value.document.text;
+    }
 
     if (text && text.length > 0) {
       this.triggerHiddenTextareaValidation();
@@ -139,7 +164,13 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   onContainerBlur = () => {
-    const { text } = this.editor.value.document;
+    const { activeEditor } = this.state;
+    let text;
+    if (activeEditor === 1) {
+      text = this.editor1.value.document.text;
+    } else if (activeEditor === 2) {
+      text = this.editor1.value.document.text;
+    }
     const { isFullScreen } = this.state;
     const { id } = this.props;
     const textarea = document.getElementById(`hidden_textarea_for_${id}`);
@@ -149,11 +180,15 @@ class LabelledRichTextEditor extends React.Component {
       textarea.removeAttribute('data-no-inline-validation');
       textarea.dispatchEvent(event);
     }
-    this.editor.blur();
-    this.validateContainer(text);
-    setTimeout(() => this.setState({ isFocused: false }), 0);
     if (!isFullScreen) {
+      if (activeEditor === 1) {
+        this.editor1.blur();
+      } else if (activeEditor === 2) {
+        this.editor2.blur();
+      }
+      this.validateContainer(text);
       this.triggerHiddenTextareaValidation();
+      setTimeout(() => this.setState({ isFocused: false }), 0);
     }
   }
 
@@ -193,10 +228,11 @@ class LabelledRichTextEditor extends React.Component {
 
 
   render() {
-    const { isFocused, isInvalid, isFullScreen, value, modalIsOpen } = this.state;
-    const { editor } = this;
-    const { text } = value.document;
-    const { label, id } = this.props;
+    const { isFocused, isInvalid, isFullScreen, value1, value2, modalIsOpen, activeEditor } = this.state;
+    const { editor1, editor2 } = this;
+    const { text } = activeEditor === 1 ? value1.document : value2.document;
+    const { id } = this.props;
+    const activeEl = document.activeElement;
     const rteClass = classNames({
       'rte-form-control is-focused': isFocused,
       'rte-form-control is-invalid': isInvalid,
@@ -208,17 +244,15 @@ class LabelledRichTextEditor extends React.Component {
         {modalIsOpen && (
           // <EditorLinkModal
           //   closeModal={this.closeModal}
-          //   hasText={editor.value.selection.isExpanded}
-          //   editor={editor}
+          //   hasText={activeEditor === 1 ? editor1.value.selection.isExpanded : editor2.value.selection.isExpanded}
+          //   editor={activeEditor === 1 ? editor1 : editor2}
           // />
-          <div>modal open</div>
+          <div>Editor link modal</div>
         )}
 
-        {label && (
-          <EditorLabel {...this.props} />
-        )}
+        <EditorLabel {...this.props} />
 
-        <div className="notes">
+        <div className="notes" id={`wrapper_${id}`}>
           <div
             ref={this.containerRef}
             className={rteClass}
@@ -229,18 +263,19 @@ class LabelledRichTextEditor extends React.Component {
             onKeyDown={this.onContainerKeyDown}
           >
             <EditorToolbar
-              value={value}
-              ref={this.editor}
+              value={activeEditor === 1 ? value1 : value2}
+              ref={activeEditor === 1 ? this.editor1 : this.editor2}
               passedState={this.state}
+              activeEl={activeEl}
               onStateChange={this.handlingStateFromChild}
             />
             <Editor
               id={id}
               className="rich-text-editor"
               spellCheck
-              ref={this.ref}
-              value={value}
-              onChange={this.handleEditorChange}
+              ref={activeEditor === 1 ? this.ref1 : this.ref2}
+              value={activeEditor === 1 ? value1 : value2}
+              onChange={(e) => this.handleEditorChange(activeEditor, e)}
               onKeyDown={this.onEditorKeyDown}
               onBlur={this.onEditorBlur}
               onPaste={onLinkPaste}
@@ -250,21 +285,10 @@ class LabelledRichTextEditor extends React.Component {
             />
           </div>
         </div>
-        {/* <LabelledTextarea
-          className="rte_hidden_textarea"
-          required
-          aria-invalid={isInvalid}
-          hideLabel
-          label="textarea"
-          id={`hidden_textarea_for_${id}`}
-          value={text}
-          tabIndex="-1"
-        /> */}
         <textarea
           className="rte_hidden_textarea"
           required
           aria-invalid={isInvalid}
-          hideLabel
           label="textarea"
           id={`hidden_textarea_for_${id}`}
           value={text}
@@ -277,8 +301,9 @@ class LabelledRichTextEditor extends React.Component {
 
 LabelledRichTextEditor.propTypes = {
   id: PropTypes.string,
+  initialValue: PropTypes.object,
   label: PropTypes.string,
-  summaryText: PropTypes.string,
+  text: PropTypes.string,
   onEditorChange: PropTypes.func,
   hideLabel: PropTypes.string,
   wrapperTag: PropTypes.string,
@@ -291,7 +316,6 @@ LabelledRichTextEditor.propTypes = {
 
 LabelledRichTextEditor.defaultProps = {
   required: true,
-  label: 'Rich Text Editor: '
 };
 
 export default LabelledRichTextEditor;

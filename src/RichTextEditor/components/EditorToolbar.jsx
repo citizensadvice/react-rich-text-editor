@@ -73,6 +73,7 @@ const EditorToolbar = React.forwardRef((props, ref) => {
     if (event) event.preventDefault();
     const { document } = value;
     const { isFullScreen } = passedState;
+    const { activeEl } = props;
 
     if (type === 'paste') {
       setIsPasteInfoActive(!isPasteInfoActive);
@@ -91,16 +92,30 @@ const EditorToolbar = React.forwardRef((props, ref) => {
     if (type === 'maximise') {
       const fieldArr = [FORM_GROUP_COLLECTION, RTE_FORM_CTRL_COLLECTION, RTE_COLLECTION]
         .map((collection) => Array.from(collection));
+      if (fieldArr) {
+        let fields = [];
+        const notesArr = fieldArr[0];
+        const containersArr = fieldArr[1];
+        const editorsArr = fieldArr[2];
 
-      fieldArr.forEach((arr) => {
-        if (arr) {
-          const field = arr[0];
-          activateFullScreen(field);
-          if (isFullScreen) {
-            deactivateFullScreen(field);
-          }
+        const containerEl = containersArr.find((el) => el.id.includes(activeEl.id));
+        const wrapperEl = notesArr.find((el) => el.id.includes(activeEl.id));
+        const editorEl = editorsArr.find((el) => el === activeEl);
+
+        fields = fields
+          .concat(containerEl)
+          .concat(wrapperEl)
+          .concat(editorEl);
+
+        if (fields) {
+          fields.forEach((field) => {
+            activateFullScreen(field);
+            if (isFullScreen) {
+              deactivateFullScreen(field);
+            }
+          });
         }
-      });
+      }
       return;
     }
 
@@ -288,6 +303,7 @@ const EditorToolbar = React.forwardRef((props, ref) => {
 
 EditorToolbar.propTypes = {
   value: PropTypes.object,
+  activeEl: PropTypes.instanceOf(Element),
   passedState: PropTypes.object,
   onStateChange: PropTypes.func,
 };
