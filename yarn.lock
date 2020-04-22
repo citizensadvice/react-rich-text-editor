@@ -5911,6 +5911,13 @@ is-plain-object@^2.0.1, is-plain-object@^2.0.3, is-plain-object@^2.0.4:
   dependencies:
     isobject "^3.0.1"
 
+is-plain-object@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-3.0.0.tgz#47bfc5da1b5d50d64110806c199359482e75a928"
+  integrity sha512-tZIpofR+P05k8Aocp7UI/2UTa9lTJSebCXpFFoR9aibpokDj/uXBsJ8luUu0tTVYKkMU6URDUuOfJZ7koewXvg==
+  dependencies:
+    isobject "^4.0.0"
+
 is-promise@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-promise/-/is-promise-2.1.0.tgz#79a2a9ece7f096e80f36d2b2f3bc16c1ff4bf3fa"
@@ -6013,6 +6020,11 @@ isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
+
+isobject@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/isobject/-/isobject-4.0.0.tgz#3f1c9155e73b192022a80819bacd0343711697b0"
+  integrity sha512-S/2fF5wH8SJA/kmwr6HYhK/RI/OkhD84k8ntalo0iJjZikgq1XFvR5M8NPT1x5F7fBwCG3qHfnzeP/Vh/ZxCUA==
 
 isomorphic-base64@^1.0.2:
   version "1.0.2"
@@ -10096,6 +10108,20 @@ slate-hotkeys@^0.2.5, slate-hotkeys@^0.2.9:
   dependencies:
     is-hotkey "0.1.4"
     slate-dev-environment "^0.2.2"
+
+slate-html-serializer@^0.8.11:
+  version "0.8.11"
+  resolved "https://registry.yarnpkg.com/slate-html-serializer/-/slate-html-serializer-0.8.11.tgz#f65d71306f70ace534bc32ee8c5e5b8202a7b700"
+  integrity sha512-WHwmjccjpAwxvvNv31kMlIKrmTGOIEs+hs1y/08oDXTpnb5EGcmqHV1WOjBx70C9B33i+MLA/sp4ZXVC/r22+w==
+  dependencies:
+    type-of "^2.0.1"
+
+slate-hyperscript@^0.57.1:
+  version "0.57.1"
+  resolved "https://registry.yarnpkg.com/slate-hyperscript/-/slate-hyperscript-0.57.1.tgz#d72fdedb527672302bd32d4e6d96c96eac91bbac"
+  integrity sha512-2vA1kCl/DPuyWziSn8CnmjAnEgdNJvFmmGWwoabHBusBeWg0AS1pQpGsuR95r2tBQifF2pweRA0T/2T6nN/uHg==
+  dependencies:
+    is-plain-object "^3.0.0"
 
 slate-plain-serializer@^0.6.8:
   version "0.6.39"
