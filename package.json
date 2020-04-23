@@ -1,7 +1,34 @@
 {
-  "name": "react-rich-text-editor",
+  "name": "@citizensadvice/react-rich-text-editor",
   "version": "0.1.0",
+  "description": "Slate based rich text editor",
+  "main": "dist/index.js",
+  "homepage": "https://citizensadvice.github.io/react-rich-text-editor",
+  "babel": {
+    "presets": [
+      "@babel/preset-react"
+    ]
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "prepare": "npm run build",
+    "publish": "rm -rf dist && mkdir dist && babel src/index.js -d dist --copy-files",
+    "install": "npm run prepare",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "lint:js": "eslint . --ext .js --ext .jsx",
+    "lint:scss": "stylelint \"**/*.scss\"",
+    "lint": "npm run lint:js && npm run lint:scss"
+  },
   "dependencies": {
+    "react-scripts": "3.4.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/preset-react": "^7.9.4",
     "@slate-editor/alignment-plugin": "^5.1.0",
     "@slate-editor/bold-plugin": "^5.1.0",
     "@slate-editor/italic-plugin": "^5.1.0",
@@ -9,34 +36,38 @@
     "@slate-editor/list-plugin": "^5.1.0",
     "@slate-editor/strikethrough-plugin": "^5.1.0",
     "@slate-editor/underline-plugin": "^5.1.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
     "classnames": "^2.2.6",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jest": "^23.8.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^3.0.0",
+    "gh-pages": "^2.2.0",
     "is-hotkey": "^0.1.4",
     "lodash-es": "^4.17.15",
     "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "sass": "^1.26.3",
     "slate": "^0.47.8",
     "slate-editor": "^5.1.1",
     "slate-plain-serializer": "^0.7.11",
-    "slate-react": "^0.22.4"
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
+    "slate-react": "^0.22.4",
+    "stylelint": "^13.3.2",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-config-standard-scss": "^1.1.0",
+    "stylelint-scss": "^3.17.0"
   },
   "peerDependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "prop-types": ">= 15",
+    "react": ">= 16.8"
   },
   "eslintConfig": {
     "extends": "react-app"
