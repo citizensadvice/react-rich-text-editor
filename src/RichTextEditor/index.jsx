@@ -82,7 +82,6 @@ class LabelledRichTextEditor extends React.Component {
     } return Value.fromJSON(initialValue);
   }
 
-
   ref1 = (editor1) => {
     this.editor1 = editor1;
   }
@@ -212,7 +211,7 @@ class LabelledRichTextEditor extends React.Component {
       text = this.editor1.value.document.text;
     }
     const { isFullScreen } = this.state;
-    const { id } = this.props;
+    const { id, required } = this.props;
     const textarea = document.getElementById(`hidden_textarea_for_${id}`);
     const event = new Event('validate', { bubbles: true });
 
@@ -226,8 +225,10 @@ class LabelledRichTextEditor extends React.Component {
       } else if (activeEditor === 2) {
         this.editor2.blur();
       }
-      this.validateContainer(text);
-      this.triggerHiddenTextareaValidation();
+      if (required) {
+        this.validateContainer(text);
+        this.triggerHiddenTextareaValidation();
+      }
       setTimeout(() => this.setState({ isFocused: false }), 0);
     }
   }
@@ -272,11 +273,11 @@ class LabelledRichTextEditor extends React.Component {
       value1, value2, modalIsOpen, activeEditor, lockedForm } = this.state;
     const { editor1, editor2 } = this;
     const { text } = activeEditor === 1 ? value1.document : value2.document;
-    const { id, events } = this.props;
+    const { id, events, required } = this.props;
     const activeEl = document.activeElement;
     const rteClass = classNames({
       'rte-form-control is-focused': isFocused,
-      'rte-form-control is-invalid': isInvalid,
+      'rte-form-control is-invalid': isInvalid && required,
       'rte-form-control': !isFocused && !isInvalid,
       'rte-form-control full-screen': isFullScreen,
     });
@@ -306,7 +307,7 @@ class LabelledRichTextEditor extends React.Component {
             {!!events && events}
             <EditorToolbar
               value={activeEditor === 1 ? value1 : value2}
-              ref={activeEditor === 1 ? this.editor1 : this.editor2}
+              ref={activeEditor === 1 ? editor1 : editor2}
               passedState={this.state}
               isLocked={lockedForm}
               activeEl={activeEl}
@@ -331,11 +332,11 @@ class LabelledRichTextEditor extends React.Component {
         </div>
         <textarea
           className="rte_hidden_textarea"
-          required
+          required={required}
           aria-invalid={isInvalid}
           label="textarea"
           id={`hidden_textarea_for_${id}`}
-          value={text}
+          defaultValue={text}
           tabIndex="-1"
         />
       </div>
@@ -345,7 +346,6 @@ class LabelledRichTextEditor extends React.Component {
 
 LabelledRichTextEditor.propTypes = {
   id: PropTypes.string,
-  initialValue: PropTypes.object,
   label: PropTypes.string,
   text: PropTypes.string,
   lockedForm: PropTypes.bool,
@@ -361,7 +361,8 @@ LabelledRichTextEditor.propTypes = {
 };
 
 LabelledRichTextEditor.defaultProps = {
-  required: true,
+  id: 'editor',
+  required: false,
   lockedForm: false,
 };
 
