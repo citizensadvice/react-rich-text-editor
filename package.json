@@ -14,7 +14,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "publish": "rm -rf dist && mkdir dist && babel src --out-dir dist --source-maps",
+    "publish": "rm -rf dist && mkdir dist && babel src/index.js -d dist --copy-files",
     "install": "npm run publish",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
