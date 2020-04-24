@@ -21,9 +21,6 @@
     "install": "npm run prepare",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint:js": "eslint . --ext .js --ext .jsx",
-    "lint:scss": "stylelint \"**/*.scss\"",
-    "lint": "npm run lint:js && npm run lint:scss"
   },
   "dependencies": {
     "react-scripts": "3.4.1",
@@ -61,9 +58,6 @@
   "peerDependencies": {
     "prop-types": ">= 15",
     "react": ">= 16.8"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [
