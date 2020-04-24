@@ -2,8 +2,7 @@
   "name": "@citizensadvice/react-rich-text-editor",
   "version": "0.1.0",
   "description": "Slate based rich text editor",
-  "main": "cjs/index.js",
-  "module": "es/index.js",
+  "main": "dist/index.js",
   "babel": {
     "presets": [
       "@babel/preset-react"
@@ -15,10 +14,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:cjs": "rm -rf cjs && babel src --out-dir cjs --source-maps",
-    "build:es": "rm -rf es && BABEL_ENV=es babel src --out-dir es --source-maps",
-    "prepare": "npm run build:cjs && npm run build:es",
-    "install": "npm run prepare",
+    "publish": "rm -rf dist && mkdir dist && babel src --out-dir dist --source-maps",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
