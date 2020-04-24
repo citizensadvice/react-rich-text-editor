@@ -18,7 +18,6 @@
     "build": "react-scripts build",
     "build:cjs": "rm -rf cjs && babel src --out-dir cjs --source-maps",
     "build:es": "rm -rf es && BABEL_ENV=es babel src --out-dir es --source-maps",
-    "prepare": "npm run build:cjs && npm run build:es",
     "install": "npm run prepare",
     "publish": "rm -rf dist && mkdir dist && babel src/index.js -d dist --copy-files",
     "deploy": "gh-pages -d build",
