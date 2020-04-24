@@ -19,6 +19,7 @@
     "build:cjs": "rm -rf cjs && babel src --out-dir cjs --source-maps",
     "build:es": "rm -rf es && BABEL_ENV=es babel src --out-dir es --source-maps",
     "prepare": "npm run build:cjs && npm run build:es",
+    "install": "npm run prepare",
     "publish": "rm -rf dist && mkdir dist && babel src/index.js -d dist --copy-files",
     "deploy": "gh-pages -d build",
     "test": "react-scripts test",
@@ -28,10 +29,10 @@
     "lint": "npm run lint:js && npm run lint:scss"
   },
   "dependencies": {
+    "@babel/cli": "^7.8.4",
     "react-scripts": "3.4.1"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
     "@babel/preset-react": "^7.9.4",
     "@slate-editor/alignment-plugin": "^5.1.0",
     "@slate-editor/bold-plugin": "^5.1.0",
