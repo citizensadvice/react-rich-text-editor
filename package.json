@@ -12,9 +12,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "prepare": "npm run build",
     "publish": "rm -rf dist && mkdir dist && babel src/index.js -d dist --copy-files",
-    "install": "npm run prepare",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "test": "react-scripts test",
