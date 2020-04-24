@@ -20,7 +20,7 @@
     "prepare": "npm run build:cjs && npm run build:es",
     "install": "npm run prepare",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "eject": "react-scripts eject"
   },
   "dependencies": {
     "react-scripts": "3.4.1",
