@@ -6,7 +6,7 @@ import { DEFAULT_NODE, FORM_GROUP_COLLECTION, RTE_FORM_CTRL_COLLECTION, RTE_COLL
 import { hasBlock, hasMark } from '../utils';
 import { unwrapLink, hasLinks } from '../link';
 
-import EditorToolbarIcon from './EditorToolbarIcon.jsx';
+import EditorToolbarIcon from './EditorToolbarIcon';
 import EditorToolbarInfobox from './EditorToolbarInfobox';
 import OutsideAlerter from './OutsideAlerter';
 
