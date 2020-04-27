@@ -7,7 +7,7 @@ import Plain from 'slate-plain-serializer';
 
 import { Value } from 'slate';
 import { IS_BOLD_HOTKEY, IS_ITALIC_HOTKEY, IS_UNDERLINED_HOTKEY } from './constants';
-import { onLinkPaste, renderInline } from '../src/RichTextEditor/link';
+import { onLinkPaste, renderInline } from './link';
 import { renderMark, renderBlock } from './utils';
 import initialValue from './value.json';
 
