@@ -4,21 +4,21 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import IconSvg from '../IconSvg/index';
 
-import bold from '../../assets/images/bold.svg';
-import italic from '../../assets/images/italic.svg';
-import underlined from '../../assets/images/underlined.svg';
-import numberedList from '../../assets/images/numbered-list.svg';
-import bulletList from '../../assets/images/bullet-list.svg';
-import paragraphLeft from '../../assets/images/paragraph-left.svg';
-import paragraphCentre from '../../assets/images/paragraph-centre.svg';
-import paragraphRight from '../../assets/images/paragraph-right.svg';
-import indentIncrease from '../../assets/images/indent-increase.svg';
-import indentDecrease from '../../assets/images/indent-decrease.svg';
-import link from '../../assets/images/link.svg';
-import paste from '../../assets/images/paste.svg';
-import undo from '../../assets/images/undo.svg';
-import redo from '../../assets/images/redo.svg';
-import maximise from '../../assets/images/maximise.svg';
+import bold from '../assets/images/bold.svg';
+import italic from '../assets/images/italic.svg';
+import underlined from '../assets/images/underlined.svg';
+import numberedList from '../assets/images/numbered-list.svg';
+import bulletList from '../assets/images/bullet-list.svg';
+import paragraphLeft from '../assets/images/paragraph-left.svg';
+import paragraphCentre from '../assets/images/paragraph-centre.svg';
+import paragraphRight from '../assets/images/paragraph-right.svg';
+import indentIncrease from '../assets/images/indent-increase.svg';
+import indentDecrease from '../assets/images/indent-decrease.svg';
+import link from '../assets/images/link.svg';
+import paste from '../assets/images/paste.svg';
+import undo from '../assets/images/undo.svg';
+import redo from '../assets/images/redo.svg';
+import maximise from '../assets/images/maximise.svg';
 
 const icons = {
   bold,
