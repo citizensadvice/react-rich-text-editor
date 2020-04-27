@@ -2,7 +2,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import IconSvg from '../../IconSvg';
+import IconSvg from '../IconSvg/index';
 
 import bold from '../../assets/images/bold.svg';
 import italic from '../../assets/images/italic.svg';
