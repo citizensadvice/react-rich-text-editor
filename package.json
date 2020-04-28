@@ -21,11 +21,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "react-scripts": "3.4.1",
-    "@babel/cli": "^7.8.4"
-  },
-  "devDependencies": {
-    "@babel/preset-react": "^7.9.4",
+    "@babel/cli": "^7.8.4",
     "@slate-editor/alignment-plugin": "^5.1.0",
     "@slate-editor/bold-plugin": "^5.1.0",
     "@slate-editor/italic-plugin": "^5.1.0",
@@ -33,21 +29,26 @@
     "@slate-editor/list-plugin": "^5.1.0",
     "@slate-editor/strikethrough-plugin": "^5.1.0",
     "@slate-editor/underline-plugin": "^5.1.0",
+    "classnames": "^2.2.6",
+    "is-hotkey": "^0.1.4",
+    "lodash-es": "^4.17.15",
+    "slate": "^0.47.8",
+    "slate-editor": "^5.1.1",
+    "slate-plain-serializer": "^0.7.11",
+    "slate-react": "^0.22.4"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.9.4",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "classnames": "^2.2.6",
     "gh-pages": "^2.2.0",
-    "is-hotkey": "^0.1.4",
     "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-scripts": "3.4.1",
     "sass": "^1.26.3",
-    "slate": "^0.47.8",
-    "slate-editor": "^5.1.1",
-    "slate-plain-serializer": "^0.7.11",
-    "slate-react": "^0.22.4",
     "stylelint": "^13.3.2",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-config-standard-scss": "^1.1.0",
@@ -68,6 +69,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "sideEffects": false
+  }
 }
