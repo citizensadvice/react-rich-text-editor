@@ -1,0 +1,63 @@
+{
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb",
+    "plugin:jest/recommended"
+  ],
+  "plugins": [
+    "react-hooks",
+    "babel"
+  ],
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "import/extensions": ["error", "never", { "json": "always" }],
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "error",
+    "object-curly-newline": ["error", { "consistent": true }],
+    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "varsIgnorePattern": "^_\\d*$", "argsIgnorePattern": "^_\\d*$" }],
+    "no-console": ["error", { "allow": ["error"] }],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "react/jsx-props-no-spreading": "off",
+    "react/no-unused-prop-types": "off",
+    "react/forbid-prop-types": "off",
+    "jsx-a11y/aria-role": "off",
+    "jsx-a11y/aria-proptypes": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/control-has-associated-label": "off",
+    "jsx-a11y/interactive-supports-focus": "off",
+    "jsx-a11y/label-has-for": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/role-has-required-aria-props": "off",
+    "no-unused-expressions": "off",
+    "babel/no-unused-expressions": "error"
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.{js,jsx}", "src/__jest_setup.js"],
+      "env": {
+        "jest": true
+      },
+      "plugins": [
+        "jest"
+      ],
+      "rules": {
+        "import/no-extraneous-dependencies": "off",
+        "react/prop-types": "off",
+        "jest/expect-expect": "off",
+        "jest/no-standalone-expect": "off"
+      }
+    },
+    {
+      "files": ["examples/**/*"],
+      "rules": {
+        "import/no-extraneous-dependencies": "off",
+        "react/prop-types": "off"
+      }
+    }
+  ]
+}
