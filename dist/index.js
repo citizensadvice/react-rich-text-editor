@@ -13,8 +13,8 @@ import initialValue from './value.json'; // import EditorLinkModal from './compo
 
 import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar'; // import LabelledTextarea from '../LabelledTextarea';
-// import './index.scss';
 
+import './index.scss';
 const initialValue1 = Value.fromJSON(initialValue);
 const initialValue2 = Value.fromJSON(initialValue);
 
