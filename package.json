@@ -14,7 +14,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:sass": "node-sass src/index.scss --include-path node_modules -o dist --output-style compressed",
+    "build:sass": "node-sass source/index.scss --include-path node_modules -o dist --output-style compressed",
     "publish": "rm -rf dist && mkdir dist && babel source -d dist --copy-files && npm run build:sass",
     "install": "npm run publish",
     "test": "react-scripts test",
