@@ -15,7 +15,7 @@ import initialValue from './value.json';
 import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar';
 // import LabelledTextarea from '../LabelledTextarea';
-import './index.scss';
+import './index.css';
 
 
 const initialValue1 = Value.fromJSON(initialValue);
