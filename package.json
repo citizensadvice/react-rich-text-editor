@@ -1,6 +1,6 @@
 {
   "name": "@citizensadvice/react-rich-text-editor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Slate based rich text editor",
   "main": "dist/index.js",
   "babel": {
