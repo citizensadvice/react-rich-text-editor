@@ -14,7 +14,12 @@ import initialValue from './value.json'; // import EditorLinkModal from './compo
 import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar'; // import LabelledTextarea from '../LabelledTextarea';
 
-import './index.css';
+import './index.css'; // retrieve content from the local storage or a default
+
+const localStorageContent = localStorage.getItem('content') || '<p><p/>';
+const html = new Html({
+  rules
+});
 const initialValue1 = Value.fromJSON(initialValue);
 const initialValue2 = Value.fromJSON(initialValue);
 
@@ -27,6 +32,36 @@ class LabelledRichTextEditor extends React.Component {
     _defineProperty(this, "editor1", React.createRef());
 
     _defineProperty(this, "editor2", React.createRef());
+
+    _defineProperty(this, "convertHtmlToString", content => {
+      // convert string into html format
+      const document = new DOMParser().parseFromString(content, 'text/html'); // get only string content from that html
+
+      return deserialize(document.body);
+    });
+
+    _defineProperty(this, "getValue", () => {
+      const {
+        edit,
+        summaryText
+      } = this.props; // console.log(summaryText);
+
+      const localStorageContentAsString = this.convertHtmlToString(localStorageContent); // convert text to value
+
+      const summaryTextAsValue = html.deserialize(summaryText);
+      const localStorageAsValue = html.deserialize(localStorageContent);
+
+      if (edit) {
+        // check if the local storage content is for the correct editor
+        if (localStorageContentAsString === summaryText) {
+          return html.deserialize(localStorageContent);
+        }
+
+        return html.deserialize(summaryText);
+      }
+
+      return Value.fromJSON(initialValue);
+    });
 
     _defineProperty(this, "ref1", editor1 => {
       this.editor1 = editor1;
@@ -71,20 +106,24 @@ class LabelledRichTextEditor extends React.Component {
         value1,
         value2
       } = this.state;
+      let content;
 
       if (key === 1) {
         this.setState({
           value1: value
         }, () => this.onEditorChange(value1));
+        content = html.serialize(value1);
       } else if (key === 2) {
         this.setState({
           value2: value
         }, () => this.onEditorChange(value2));
+        content = html.serialize(value2);
       }
 
       this.setState({
         activeEditor: key
       });
+      localStorage.setItem('content', content);
     });
 
     _defineProperty(this, "validateEditor", text => {
@@ -161,6 +200,7 @@ class LabelledRichTextEditor extends React.Component {
     });
 
     _defineProperty(this, "onClick", () => {
+      if (this.state.lockedForm) return;
       this.setState({
         isFocused: true
       });
@@ -202,7 +242,8 @@ class LabelledRichTextEditor extends React.Component {
         isFullScreen
       } = this.state;
       const {
-        id
+        id,
+        required
       } = this.props;
       const textarea = document.getElementById(`hidden_textarea_for_${id}`);
       const event = new Event('validate', {
@@ -221,8 +262,11 @@ class LabelledRichTextEditor extends React.Component {
           this.editor2.blur();
         }
 
-        this.validateContainer(text);
-        this.triggerHiddenTextareaValidation();
+        if (required) {
+          this.validateContainer(text);
+          this.triggerHiddenTextareaValidation();
+        }
+
         setTimeout(() => this.setState({
           isFocused: false
         }), 0);
@@ -233,7 +277,8 @@ class LabelledRichTextEditor extends React.Component {
       const {
         id
       } = this.props;
-      const textarea = document.getElementById(`hidden_textarea_for_${id}`);
+      const textarea = document.getElementById(`hidden_textarea_for_${id}`); // this will only apply to casebook
+
       const policyModal = document.getElementById('casebook_policy_acceptance_accept_terms_of_use');
       const policyModalActive = document.activeElement === policyModal; // validate editor when clicking inside or outside of the document, but not while the policy acceptance modal is displayed
 
@@ -275,6 +320,8 @@ class LabelledRichTextEditor extends React.Component {
       // we must have different values for each editor instace
       value1: this.props.edit ? Plain.deserialize(this.props.text) : Value.fromJSON(initialValue1),
       value2: this.props.edit ? Plain.deserialize(this.props.text) : Value.fromJSON(initialValue2),
+      value: this.getValue(),
+      lockedForm: this.props.lockedForm,
       activeEditor: 1,
       isFocused: false,
       isInvalid: false,
@@ -286,6 +333,7 @@ class LabelledRichTextEditor extends React.Component {
 
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickInAndOut);
+    console.log('value received', this.state.value.document.text);
   }
 
   componentWillUnmount() {
@@ -300,7 +348,8 @@ class LabelledRichTextEditor extends React.Component {
       value1,
       value2,
       modalIsOpen,
-      activeEditor
+      activeEditor,
+      lockedForm
     } = this.state;
     const {
       editor1,
@@ -310,12 +359,14 @@ class LabelledRichTextEditor extends React.Component {
       text
     } = activeEditor === 1 ? value1.document : value2.document;
     const {
-      id
+      id,
+      events,
+      required
     } = this.props;
     const activeEl = document.activeElement;
     const rteClass = classNames({
       'rte-form-control is-focused': isFocused,
-      'rte-form-control is-invalid': isInvalid,
+      'rte-form-control is-invalid': isInvalid && required,
       'rte-form-control': !isFocused && !isInvalid,
       'rte-form-control full-screen': isFullScreen
     });
@@ -339,16 +390,18 @@ class LabelledRichTextEditor extends React.Component {
       onBlur: this.onContainerBlur,
       onClick: this.onClick,
       onKeyDown: this.onContainerKeyDown
-    }, /*#__PURE__*/React.createElement(EditorToolbar, {
+    }, !!events && events, /*#__PURE__*/React.createElement(EditorToolbar, {
       value: activeEditor === 1 ? value1 : value2,
-      ref: activeEditor === 1 ? this.editor1 : this.editor2,
+      ref: activeEditor === 1 ? editor1 : editor2,
       passedState: this.state,
+      isLocked: lockedForm,
       activeEl: activeEl,
       onStateChange: this.handlingStateFromChild
     }), /*#__PURE__*/React.createElement(Editor, {
       id: id,
       className: "rich-text-editor",
       spellCheck: true,
+      readOnly: lockedForm,
       ref: activeEditor === 1 ? this.ref1 : this.ref2,
       value: activeEditor === 1 ? value1 : value2,
       onChange: e => this.handleEditorChange(activeEditor, e),
@@ -360,11 +413,11 @@ class LabelledRichTextEditor extends React.Component {
       renderInline: renderInline
     }))), /*#__PURE__*/React.createElement("textarea", {
       className: "rte_hidden_textarea",
-      required: true,
+      required: required,
       "aria-invalid": isInvalid,
       label: "textarea",
       id: `hidden_textarea_for_${id}`,
-      value: text,
+      defaultValue: text,
       tabIndex: "-1"
     }));
   }
@@ -373,9 +426,9 @@ class LabelledRichTextEditor extends React.Component {
 
 LabelledRichTextEditor.propTypes = {
   id: PropTypes.string,
-  initialValue: PropTypes.object,
   label: PropTypes.string,
   text: PropTypes.string,
+  lockedForm: PropTypes.bool,
   onEditorChange: PropTypes.func,
   hideLabel: PropTypes.string,
   wrapperTag: PropTypes.string,
@@ -383,9 +436,12 @@ LabelledRichTextEditor.propTypes = {
   edit: PropTypes.bool,
   requiredGroup: PropTypes.bool,
   labelClassName: PropTypes.string,
-  handleEditorChange: PropTypes.func
+  handleEditorChange: PropTypes.func,
+  events: PropTypes.node
 };
 LabelledRichTextEditor.defaultProps = {
-  required: true
+  id: 'editor',
+  required: false,
+  lockedForm: false
 };
 export default LabelledRichTextEditor;
