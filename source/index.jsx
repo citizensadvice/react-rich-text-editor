@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { Editor } from 'slate-react';
 import Plain from 'slate-plain-serializer';
+import Html from 'slate-html-serializer';
 
 import { Value } from 'slate';
 import { IS_BOLD_HOTKEY, IS_ITALIC_HOTKEY, IS_UNDERLINED_HOTKEY } from './constants';
 import { onLinkPaste, renderInline } from './link';
-import { renderMark, renderBlock } from './utils';
+import { renderMark, renderBlock, rules, deserialize } from './utils';
 import initialValue from './value.json';
 
 // import EditorLinkModal from './components/EditorLinkModal';
