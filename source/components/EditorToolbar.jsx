@@ -15,6 +15,7 @@ const EditorToolbar = React.forwardRef((props, ref) => {
     value,
     passedState,
     onStateChange,
+    isLocked,
   } = props;
 
   const editorRef = ref;
@@ -50,6 +51,7 @@ const EditorToolbar = React.forwardRef((props, ref) => {
         type={type}
         title={startCase(type)}
         isActive={isActive}
+        isLocked={isLocked}
         onMouseDown={(event) => onClickMark(event, type, editorRef)}
         onKeyDown={(event) => onMarkKeyDown(event, type, editorRef)}
         onBlur={(e) => onBlur(e)}
@@ -230,6 +232,7 @@ const EditorToolbar = React.forwardRef((props, ref) => {
           isActive={isActive}
           isDisabled={disableIcon(type, value)}
           type={type}
+          isLocked={isLocked}
           title={startCase(type)}
           onMouseDown={(event) => onButtonMouseDown(event, type)}
           onKeyDown={(event) => onButtonKeyDown(event, type)}
@@ -306,6 +309,7 @@ EditorToolbar.propTypes = {
   activeEl: PropTypes.instanceOf(Element),
   passedState: PropTypes.object,
   onStateChange: PropTypes.func,
+  isLocked: PropTypes.bool,
 };
 
 // The forwardRef generates an anonymous function,

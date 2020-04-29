@@ -40,12 +40,13 @@ const icons = {
 
 
 // eslint-disable-next-line arrow-body-style
-const EditorToolbarIcon = ({ type, isActive, isDisabled, ...props }) => {
+const EditorToolbarIcon = ({ type, isActive, isDisabled, isLocked, ...props }) => {
   const classes = classNames(
     'rte-format-toolbar_button',
     {
       active: isActive && !isDisabled,
       disabled: isDisabled,
+      readonly: isLocked,
     },
   );
 
@@ -63,6 +64,7 @@ EditorToolbarIcon.propTypes = {
   type: PropTypes.string,
   isActive: PropTypes.bool,
   isDisabled: PropTypes.bool,
+  isLocked: PropTypes.bool,
   onMouseDown: PropTypes.func,
   onKeyDown: PropTypes.func,
   onBlur: PropTypes.func,

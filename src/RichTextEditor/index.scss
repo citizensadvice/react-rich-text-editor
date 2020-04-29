@@ -98,6 +98,9 @@
         cursor: not-allowed !important;
       }
     }
+    &.readonly {
+      pointer-events: none;
+    }
   }
 }
 
