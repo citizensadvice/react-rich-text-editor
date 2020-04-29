@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './index.scss';
+// import './index.scss';
 
 const IconSvg = ({ icons, name, className, ...props }) => {
   if (!name) return null;
@@ -9,6 +9,7 @@ const IconSvg = ({ icons, name, className, ...props }) => {
       {icons && Object.keys(icons).map((title) => {
         if (name === title) {
           return (
+            // should be button
             <img key={title} className="icon-svg" src={icons[title]} alt={title} />
           );
         } return null;
