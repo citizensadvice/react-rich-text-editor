@@ -23,7 +23,6 @@ import './index.scss';
 const localStorageContent = localStorage.getItem('content') || '<p><p/>';
 const html = new Html({ rules });
 
-
 const initialValue1 = Value.fromJSON(initialValue);
 const initialValue2 = Value.fromJSON(initialValue);
 
