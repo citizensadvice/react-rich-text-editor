@@ -49,12 +49,7 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickInAndOut);
     console.log('value received', this.state.value.document.text);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickInAndOut);
   }
 
   convertHtmlToString = (content) => {
@@ -96,14 +91,6 @@ class LabelledRichTextEditor extends React.Component {
     this.setState({ modalIsOpen: false });
   }
 
-  triggerHiddenTextareaValidation = () => {
-    const { id } = this.props;
-    const event = new Event('validate', { bubbles: true });
-    const textarea = document.getElementById(`hidden_textarea_for_${id}`);
-    if (!textarea) return;
-    textarea.dispatchEvent(event);
-  }
-
   onEditorChange = (value) => {
     if (this.props.onEditorChange) {
       this.props.onEditorChange(value);
@@ -128,7 +115,6 @@ class LabelledRichTextEditor extends React.Component {
   validateEditor = (text) => {
     if (text !== '') {
       this.setState({ isInvalid: false, isFocused: true });
-      this.triggerHiddenTextareaValidation();
     } else {
       this.setState({ isInvalid: true });
     }
@@ -150,7 +136,6 @@ class LabelledRichTextEditor extends React.Component {
     }
 
     if (text && text.length > 0) {
-      this.triggerHiddenTextareaValidation();
       this.setClassOfContainer('rte-form-control is-focused');
       setTimeout(() => this.setState({ isFocused: true }), 0);
     }
@@ -209,45 +194,20 @@ class LabelledRichTextEditor extends React.Component {
       text = this.editor1.value.document.text;
     }
     const { isFullScreen } = this.state;
-    const { id, required } = this.props;
-    const textarea = document.getElementById(`hidden_textarea_for_${id}`);
-    const event = new Event('validate', { bubbles: true });
+    const { required, useNativeValidation } = this.props;
 
-    if (!document.hasFocus()) {
-      textarea.removeAttribute('data-no-inline-validation');
-      textarea.dispatchEvent(event);
-    }
     if (!isFullScreen) {
       if (activeEditor === 1) {
         this.editor1.blur();
       } else if (activeEditor === 2) {
         this.editor2.blur();
       }
-      if (required) {
+      if (required && useNativeValidation) {
         this.validateContainer(text);
-        this.triggerHiddenTextareaValidation();
       }
       setTimeout(() => this.setState({ isFocused: false }), 0);
     }
   }
-
-  handleClickInAndOut = (e) => {
-    const { id } = this.props;
-    const textarea = document.getElementById(`hidden_textarea_for_${id}`);
-    // this will only apply to casebook
-    const policyModal = document.getElementById('casebook_policy_acceptance_accept_terms_of_use');
-    const policyModalActive = document.activeElement === policyModal;
-
-    // validate editor when clicking inside or outside of the document, but not while the policy acceptance modal is displayed
-    if (!policyModalActive) {
-      if (this.containerRef.current && !this.containerRef.current.contains(e.target)) {
-        textarea.removeAttribute('data-no-inline-validation');
-      } else {
-        textarea.setAttribute('data-no-inline-validation', 'true');
-      }
-    }
-  }
-
 
   onEditorBlur = (e, editor, next) => {
     const { isKeyShiftTab } = this.state;
@@ -260,23 +220,18 @@ class LabelledRichTextEditor extends React.Component {
     setTimeout(() => this.setState({ isKeyShiftTab: false }), 0);
   }
 
-  onContainerKeyDown = () => {
-    const { id } = this.props;
-    const textarea = document.getElementById(`hidden_textarea_for_${id}`);
-    textarea.removeAttribute('data-no-inline-validation');
-  }
-
   render() {
     const { isFocused, isInvalid, isFullScreen,
       value1, value2, modalIsOpen, activeEditor, lockedForm } = this.state;
     const { editor1, editor2 } = this;
-    const { text } = activeEditor === 1 ? value1.document : value2.document;
-    const { id, events, required } = this.props;
+    // const { text } = activeEditor === 1 ? value1.document : value2.document;
+    const { id, events, required, label, useNativeValidation, customErrorMsg } = this.props;
     const activeEl = document.activeElement;
+    const showValidation = isInvalid && required && useNativeValidation;
     const rteClass = classNames({
       'rte-form-control is-focused': isFocused,
-      'rte-form-control is-invalid': isInvalid && required,
-      'rte-form-control': !isFocused && !isInvalid,
+      'rte-form-control is-invalid': showValidation,
+      'rte-form-control': !isFocused && !showValidation,
       'rte-form-control full-screen': isFullScreen,
     });
     return (
@@ -292,6 +247,7 @@ class LabelledRichTextEditor extends React.Component {
 
         <EditorLabel {...this.props} />
 
+        {/* change classname from notes to something more suggestive */}
         <div className="notes" id={`wrapper_${id}`}>
           <div
             ref={this.containerRef}
@@ -300,7 +256,6 @@ class LabelledRichTextEditor extends React.Component {
             onFocus={this.onContainerFocus}
             onBlur={this.onContainerBlur}
             onClick={this.onClick}
-            onKeyDown={this.onContainerKeyDown}
           >
             {!!events && events}
             <EditorToolbar
@@ -315,6 +270,11 @@ class LabelledRichTextEditor extends React.Component {
               id={id}
               className="rich-text-editor"
               spellCheck
+              contentEditable="true"
+              role="textbox"
+              aria-labelledby={label}
+              aria-describedby={`${id}_error`}
+              aria-invalid={isInvalid}
               readOnly={lockedForm}
               ref={activeEditor === 1 ? this.ref1 : this.ref2}
               value={activeEditor === 1 ? value1 : value2}
@@ -328,15 +288,11 @@ class LabelledRichTextEditor extends React.Component {
             />
           </div>
         </div>
-        <textarea
-          className="rte_hidden_textarea"
-          required={required}
-          aria-invalid={isInvalid}
-          label="textarea"
-          id={`hidden_textarea_for_${id}`}
-          defaultValue={text}
-          tabIndex="-1"
-        />
+        {showValidation && (
+        <span id={`${id}_error`} className="form-control-invalid">
+          {customErrorMsg}
+        </span>
+        )}
       </div>
     );
   }
@@ -345,12 +301,14 @@ class LabelledRichTextEditor extends React.Component {
 LabelledRichTextEditor.propTypes = {
   id: PropTypes.string,
   label: PropTypes.string,
+  customErrorMsg: PropTypes.string,
   text: PropTypes.string,
   lockedForm: PropTypes.bool,
   onEditorChange: PropTypes.func,
   hideLabel: PropTypes.string,
   wrapperTag: PropTypes.string,
   required: PropTypes.bool,
+  useNativeValidation: PropTypes.bool,
   edit: PropTypes.bool,
   requiredGroup: PropTypes.bool,
   labelClassName: PropTypes.string,
@@ -362,6 +320,7 @@ LabelledRichTextEditor.defaultProps = {
   id: 'editor',
   required: false,
   lockedForm: false,
+  customErrorMsg: 'Please complete this field',
 };
 
 export default LabelledRichTextEditor;
