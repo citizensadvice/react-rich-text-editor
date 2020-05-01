@@ -220,7 +220,7 @@ class LabelledRichTextEditor extends React.Component {
         <div className="notes" id={`wrapper_${id}`}>
           <div
             ref={this.containerRef}
-            className={`${baseClassName} ${rteClass}`}
+            className={`rte-form-control ${rteClass}`}
             id={`${id}_editor_container`}
             onFocus={this.onContainerFocus}
             onBlur={this.onContainerBlur}
@@ -263,7 +263,6 @@ class LabelledRichTextEditor extends React.Component {
 }
 
 LabelledRichTextEditor.propTypes = {
-  baseClassName: PropTypes.string,
   isInvalid: PropTypes.bool,
   id: PropTypes.string,
   label: PropTypes.string,

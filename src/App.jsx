@@ -15,7 +15,6 @@ function App() {
   return (
     <div style={containerStyles}>
       <RichTextEditor
-        baseClassName="rte-form-control"
         isInvalid={isInvalid}
       />
     </div>
