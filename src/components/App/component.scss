@@ -1,4 +1,4 @@
-@import './variables.scss';
+@import "../../globals/variables.scss";
 
 html {
   height: 100%;
@@ -31,7 +31,7 @@ textarea {
   flex-flow: row;
 
   > input {
-    margin-right: .625rem;
+    margin-right: 0.625rem;
   }
 
   .form-group {
@@ -88,14 +88,14 @@ textarea {
   }
 
   // All invalid inputs will have this attribute
-  &[aria-invalid=true] {
+  &[aria-invalid="true"] {
     border-color: $color-tomato;
   }
 
   &:focus {
     border-color: $color-squash;
     border-width: $px2;
-    padding: pluspx(.5rem, -1) pluspx(.75rem, -1);
+    padding: pluspx(0.5rem, -1) pluspx(0.75rem, -1);
     box-shadow: none;
   }
 
@@ -128,11 +128,11 @@ textarea {
 textarea.form-control {
   border: $px1 solid $color-cloudy;
   background: $color-white;
-  padding: rem(10) .75rem;
+  padding: rem(10) 0.75rem;
 
   &:focus {
     border-color: $color-squash;
-    padding: pluspx(rem(10), -1) pluspx(.75rem, -1);
+    padding: pluspx(rem(10), -1) pluspx(0.75rem, -1);
   }
 }
 
@@ -158,7 +158,7 @@ textarea.form-control {
   }
 
   > ul {
-    margin-top: .5rem;
+    margin-top: 0.5rem;
   }
 }
 
@@ -168,7 +168,7 @@ textarea.form-control {
   background: $color-lavender;
 
   &::before {
-    content: '\f05a';
+    content: "\f05a";
   }
 }
 
@@ -191,7 +191,7 @@ abbr.required-marker {
   border-color: $color-tomato;
 
   &::before {
-    content: '\f05e';
+    content: "\f05e";
   }
 }
 
