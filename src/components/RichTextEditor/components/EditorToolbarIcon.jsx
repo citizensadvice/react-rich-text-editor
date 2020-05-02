@@ -1,9 +1,8 @@
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-/* eslint-disable import/first */
 /* eslint-disable react/forbid-elements */
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+
 import IconSvg from './IconSvg';
 import bold from '../assets/images/bold.svg';
 import italic from '../assets/images/italic.svg';
@@ -20,6 +19,7 @@ import paste from '../assets/images/paste.svg';
 import undo from '../assets/images/undo.svg';
 import redo from '../assets/images/redo.svg';
 import maximise from '../assets/images/maximise.svg';
+
 const icons = {
   bold,
   italic,
@@ -35,32 +35,38 @@ const icons = {
   paste,
   undo,
   redo,
-  maximise
-}; // eslint-disable-next-line arrow-body-style
+  maximise,
+};
 
-const EditorToolbarIcon = ({
-  type,
-  isActive,
-  isDisabled,
-  ...props
-}) => {
-  const classes = classNames('rte-format-toolbar_button', {
-    active: isActive && !isDisabled,
-    disabled: isDisabled
-  });
-  return /*#__PURE__*/React.createElement(IconSvg, _extends({
-    name: type,
-    icons: icons,
-    className: classes
-  }, props));
+// eslint-disable-next-line arrow-body-style
+const EditorToolbarIcon = ({ type, isActive, isDisabled, isLocked, ...props }) => {
+  const classes = classNames(
+    'rte-format-toolbar_button',
+    {
+      active: isActive && !isDisabled,
+      disabled: isDisabled,
+      readonly: isLocked,
+    },
+  );
+
+  return (
+    <IconSvg
+      name={type}
+      icons={icons}
+      className={classes}
+      {...props}
+    />
+  );
 };
 
 EditorToolbarIcon.propTypes = {
   type: PropTypes.string,
   isActive: PropTypes.bool,
   isDisabled: PropTypes.bool,
+  isLocked: PropTypes.bool,
   onMouseDown: PropTypes.func,
   onKeyDown: PropTypes.func,
-  onBlur: PropTypes.func
+  onBlur: PropTypes.func,
 };
+
 export default EditorToolbarIcon;

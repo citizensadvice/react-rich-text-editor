@@ -1,7 +1,6 @@
 import React from 'react';
 
 export const hasMark = (type, editorValue) => editorValue.activeMarks.some((mark) => mark.type === type);
-
 export const hasBlock = (type, editorValue) => editorValue.blocks.some((node) => node.type === type);
 
 export const renderBlock = (props, editor, next) => {
