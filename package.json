@@ -14,12 +14,12 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:sass": "node-sass source/index.scss --include-path node_modules -o dist --output-style compressed",
-    "publish": "rm -rf dist && mkdir dist && babel source -d dist --copy-files && npm run build:sass",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
     "lint:js": "eslint . --ext .js --ext .jsx",
     "lint:scss": "stylelint \"**/*.scss\"",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "build:sass": "node-sass src/components/RichTextEditor/component.scss src/components/RichTextEditor/component.min.css --output-style compressed",
+    "package:npm": "npm run build:sass && rm -rf dist && mkdir dist && babel src/components/RichTextEditor -d dist --copy-files"
   },
   "dependencies": {
     "@babel/cli": "^7.8.4",

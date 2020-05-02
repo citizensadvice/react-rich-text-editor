@@ -2,7 +2,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 /* eslint-disable import/first */
 import React from 'react';
 import PropTypes from 'prop-types'; // import './index.scss';
-import './index.scss';
+// import './index.scss';
 
 const IconSvg = ({
   icons,

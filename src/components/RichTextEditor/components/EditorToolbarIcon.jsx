@@ -4,7 +4,7 @@ function _extends() { _extends = Object.assign || function (target) { for (var i
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import IconSvg from '../IconSvg/index';
+import IconSvg from './IconSvg';
 import bold from '../assets/images/bold.svg';
 import italic from '../assets/images/italic.svg';
 import underlined from '../assets/images/underlined.svg';

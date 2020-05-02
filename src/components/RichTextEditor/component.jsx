@@ -16,8 +16,6 @@ import initialValue from './value.json';
 import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar';
 // import LabelledTextarea from '../LabelledTextarea';
-import './index.scss';
-
 
 // retrieve content from the local storage or a default
 const localStorageContent = localStorage.getItem('content') || '<p><p/>';
