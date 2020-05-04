@@ -11,13 +11,6 @@
   }
 }
 
-.rte_hidden_textarea {
-  width: 0;
-  padding: 0;
-  margin: 0;
-  position: absolute !important;
-}
-
 .rte-format-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -106,6 +99,28 @@
   }
 }
 
+.rich-text-editor {
+  height: 11rem;
+  overflow-y: scroll;
+  padding: 0.5rem 0.8rem;
+
+  &.full-screen {
+    font-size: 1rem;
+    height: 100%;
+    padding-bottom: 5rem;
+    padding-top: 1rem;
+
+    // Target all children of the slate editor in order to center them
+    // and give them a max width of 592px, which is an "ideal words
+    // per line limit".
+    & > * {
+      margin-left: auto;
+      margin-right: auto;
+      width: 37rem;
+    }
+  }
+}
+
 .rte-form-control {
   background: $color-white;
   border-radius: 0;
@@ -148,6 +163,11 @@
       padding-right: calc(0.8rem + -1px);
     }
   }
+  &:disabled {
+    &::placeholder {
+      color: $color-black-l80;
+    }
+  }
 
   &:disabled,
   &[readonly] {
@@ -162,34 +182,6 @@
 
   &[readonly]::placeholder {
     color: $color-white;
-  }
-
-  &:disabled {
-    &::placeholder {
-      color: $color-black-l80;
-    }
-  }
-}
-
-.rich-text-editor {
-  height: 11rem;
-  overflow-y: scroll;
-  padding: 0.5rem 0.8rem;
-
-  &.full-screen {
-    font-size: 1rem;
-    height: 100%;
-    padding-bottom: 5rem;
-    padding-top: 1rem;
-
-    // Target all children of the slate editor in order to center them
-    // and give them a max width of 592px, which is an "ideal words
-    // per line limit".
-    & > * {
-      margin-left: auto;
-      margin-right: auto;
-      width: 37rem;
-    }
   }
 }
 
@@ -234,9 +226,12 @@
     }
   }
   &_hidden_textarea {
-    position: relative;
-    z-index: -1;
     height: 0;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 0;
+    z-index: -1;
   }
 }
 
