@@ -67,7 +67,6 @@ class LabelledRichTextEditor extends React.Component {
 
   getValue = () => {
     const { edit, summaryText } = this.props;
-    // console.log(summaryText);
     const localStorageContentAsString = this.convertHtmlToString(localStorageContent);
     // convert text to value
     const summaryTextAsValue = html.deserialize(summaryText);
@@ -319,6 +318,7 @@ class LabelledRichTextEditor extends React.Component {
               readOnly={lockedForm}
               ref={activeEditor === 1 ? this.ref1 : this.ref2}
               value={activeEditor === 1 ? value1 : value2}
+              // value={activeEditor === 1 ? Value.fromJSON(html.serialize(value1)) : Value.fromJSON(html.serialize(value2))}
               onChange={(e) => this.handleEditorChange(activeEditor, e)}
               onKeyDown={this.onEditorKeyDown}
               onBlur={this.onEditorBlur}
