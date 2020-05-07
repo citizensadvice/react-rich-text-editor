@@ -16,7 +16,6 @@
     "build": "react-scripts build",
     "build:sass": "node-sass source/index.scss --include-path node_modules -o dist --output-style compressed",
     "publish": "rm -rf dist && mkdir dist && babel source -d dist --copy-files && npm run build:sass",
-    "install": "npm run publish",
     "lint:js": "eslint . --ext .js --ext .jsx",
     "lint:scss": "stylelint \"**/*.scss\"",
     "test": "react-scripts test",
