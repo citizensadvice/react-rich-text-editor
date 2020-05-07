@@ -77,20 +77,15 @@ class LabelledRichTextEditor extends React.Component {
     if (onEditorChange) onEditorChange(value);
   }
 
+
   handleEditorChange = (key, { value }) => {
     const { value1, value2 } = this.state;
-    let content;
 
     if (key === 1) {
-      this.setState({ value1: value }, () => this.onEditorChange(value1));
-      content = html.serialize(value1);
-      console.log(content);
+      this.setState({ value1: value }, () => this.onEditorChange(html.serialize(value1)));
     } else if (key === 2) {
-      this.setState({ value2: value }, () => this.onEditorChange(value2));
-      content = html.serialize(value2);
+      this.setState({ value2: value }, () => this.onEditorChange(html.serialize(value2)));
     } this.setState({ activeEditor: key });
-
-    localStorage.setItem('content', content);
   }
 
   setClassOfContainer = (className) => {
@@ -132,14 +127,7 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   onContainerBlur = () => {
-    const { activeEditor } = this.state;
-    let text;
-    if (activeEditor === 1) {
-      text = this.editor1.value.document.text;
-    } else if (activeEditor === 2) {
-      text = this.editor1.value.document.text;
-    }
-    const { isFullScreen } = this.state;
+    const { activeEditor, isFullScreen } = this.state;
 
     if (!isFullScreen) {
       if (activeEditor === 1) {
@@ -164,7 +152,7 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   render() {
-    const { isInvalid, baseClassName } = this.props;
+    const { isInvalid } = this.props;
 
     const {
       value1, value2,
@@ -176,7 +164,6 @@ class LabelledRichTextEditor extends React.Component {
     } = this.state;
 
     const { editor1, editor2 } = this;
-    // const { text } = activeEditor === 1 ? value1.document : value2.document;
     const { id, events, label } = this.props;
     const activeEl = document.activeElement;
 
@@ -230,7 +217,6 @@ class LabelledRichTextEditor extends React.Component {
               readOnly={lockedForm}
               ref={activeEditor === 1 ? this.ref1 : this.ref2}
               value={activeEditor === 1 ? value1 : value2}
-              // value={activeEditor === 1 ? Value.fromJSON(html.serialize(value1)) : Value.fromJSON(html.serialize(value2))}
               onChange={(e) => this.handleEditorChange(activeEditor, e)}
               onKeyDown={this.onEditorKeyDown}
               onBlur={this.onEditorBlur}

@@ -4,12 +4,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Editor } from 'slate-react';
-import Plain from 'slate-plain-serializer';
 import Html from 'slate-html-serializer';
 import { Value } from 'slate';
 import { IS_BOLD_HOTKEY, IS_ITALIC_HOTKEY, IS_UNDERLINED_HOTKEY } from './constants';
 import { onLinkPaste, renderInline } from './link';
-import { renderMark, renderBlock, rules, deserialize } from './utils';
+import { renderMark, renderBlock, rules } from './utils';
 import initialValue from './value.json'; // import EditorLinkModal from './components/EditorLinkModal';
 
 import EditorLabel from './components/EditorLabel';
@@ -51,8 +50,12 @@ class LabelledRichTextEditor extends React.Component {
     });
 
     _defineProperty(this, "onEditorChange", value => {
-      if (this.props.onEditorChange) {
-        this.props.onEditorChange(value);
+      const {
+        onEditorChange
+      } = this.props;
+
+      if (onEditorChange) {
+        onEditorChange(value);
       }
     });
 
@@ -63,37 +66,20 @@ class LabelledRichTextEditor extends React.Component {
         value1,
         value2
       } = this.state;
-      let content;
 
       if (key === 1) {
         this.setState({
           value1: value
-        }, () => this.onEditorChange(value1));
-        content = html.serialize(value1);
+        }, () => this.onEditorChange(html.serialize(value1)));
       } else if (key === 2) {
         this.setState({
           value2: value
-        }, () => this.onEditorChange(value2));
-        content = html.serialize(value2);
+        }, () => this.onEditorChange(html.serialize(value2)));
       }
 
       this.setState({
         activeEditor: key
       });
-      localStorage.setItem('content', content);
-    });
-
-    _defineProperty(this, "validateEditor", text => {
-      if (text !== '') {
-        this.setState({
-          isInvalid: false,
-          isFocused: true
-        });
-      } else {
-        this.setState({
-          isInvalid: true
-        });
-      }
     });
 
     _defineProperty(this, "setClassOfContainer", className => {
@@ -104,38 +90,12 @@ class LabelledRichTextEditor extends React.Component {
       container.classList = [className];
     });
 
-    _defineProperty(this, "checkIfNeedsValidation", () => {
-      const {
-        activeEditor
-      } = this.state;
-      let text;
-
-      if (activeEditor === 1) {
-        text = this.editor1.value.document.text;
-      } else if (activeEditor === 2) {
-        text = this.editor1.value.document.text;
-      }
-
-      if (text && text.length > 0) {
-        this.setClassOfContainer('rte-form-control is-focused');
-        setTimeout(() => this.setState({
-          isFocused: true
-        }), 0);
-      }
-
-      this.validateEditor(text);
-    });
-
     _defineProperty(this, "onEditorKeyDown", (event, editor, next) => {
       // eslint-disable-line consistent-return
       if (event.key === 'Tab' && event.shiftKey === true) {
         this.setState({
           isKeyShiftTab: true
         });
-      }
-
-      if (this.state.isInvalid) {
-        this.checkIfNeedsValidation();
       }
 
       let mark;
@@ -155,61 +115,36 @@ class LabelledRichTextEditor extends React.Component {
     });
 
     _defineProperty(this, "onClick", () => {
-      if (this.state.lockedForm) return;
+      const {
+        lockedForm
+      } = this.state;
+      if (lockedForm) return;
       this.setState({
         isFocused: true
       });
     });
 
     _defineProperty(this, "onContainerFocus", e => {
-      if (this.containerRef.current.contains(e.target) && !this.state.isFullScreen) {
-        this.setClassOfContainer('rte-form-control is-focused');
-      }
-    });
+      const {
+        isFullScreen
+      } = this.state;
 
-    _defineProperty(this, "validateContainer", text => {
-      if (text === '') {
-        setTimeout(() => this.setState({
-          isInvalid: true
-        }), 0);
-        this.setClassOfContainer('rte-form-control is-invalid');
-      } else {
-        setTimeout(() => this.setState({
-          isInvalid: false
-        }), 0);
-        this.setClassOfContainer('rte-form-control');
+      if (this.containerRef.current.contains(e.target) && !isFullScreen) {
+        this.setClassOfContainer('rte-form-control is-focused');
       }
     });
 
     _defineProperty(this, "onContainerBlur", () => {
       const {
-        activeEditor
-      } = this.state;
-      let text;
-
-      if (activeEditor === 1) {
-        text = this.editor1.value.document.text;
-      } else if (activeEditor === 2) {
-        text = this.editor1.value.document.text;
-      }
-
-      const {
+        activeEditor,
         isFullScreen
       } = this.state;
-      const {
-        required,
-        useNativeValidation
-      } = this.props;
 
       if (!isFullScreen) {
         if (activeEditor === 1) {
           this.editor1.blur();
         } else if (activeEditor === 2) {
           this.editor2.blur();
-        }
-
-        if (required && useNativeValidation) {
-          this.validateContainer(text);
         }
 
         setTimeout(() => this.setState({
@@ -242,7 +177,6 @@ class LabelledRichTextEditor extends React.Component {
       lockedForm: this.props.lockedForm,
       activeEditor: 1,
       isFocused: false,
-      isInvalid: false,
       isFullScreen: false,
       modalIsOpen: false,
       isKeyShiftTab: false
@@ -255,21 +189,17 @@ class LabelledRichTextEditor extends React.Component {
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClickInAndOut);
-  } // convertHtmlToString = (content) => {
-  //   // convert string into html format
-  //   const document = new DOMParser().parseFromString(content, 'text/html');
-  //   // get only string content from that html
-  //   return deserialize(document.body);
-  // }
-
+  }
 
   render() {
     const {
-      isFocused,
-      isInvalid,
-      isFullScreen,
+      isInvalid
+    } = this.props;
+    const {
       value1,
       value2,
+      isFocused,
+      isFullScreen,
       modalIsOpen,
       activeEditor,
       lockedForm
@@ -277,22 +207,15 @@ class LabelledRichTextEditor extends React.Component {
     const {
       editor1,
       editor2
-    } = this; // const { text } = activeEditor === 1 ? value1.document : value2.document;
-
+    } = this;
     const {
       id,
       events,
-      required,
-      label,
-      useNativeValidation,
-      customErrorMsg
+      label
     } = this.props;
     const activeEl = document.activeElement;
-    const showValidation = isInvalid && required && useNativeValidation;
     const rteClass = classNames({
       'rte-form-control is-focused': isFocused,
-      'rte-form-control is-invalid': showValidation,
-      'rte-form-control': !isFocused && !showValidation,
       'rte-form-control full-screen': isFullScreen
     });
     return /*#__PURE__*/React.createElement("div", {
@@ -340,15 +263,13 @@ class LabelledRichTextEditor extends React.Component {
       renderBlock: renderBlock,
       renderMark: renderMark,
       renderInline: renderInline
-    }))), showValidation && /*#__PURE__*/React.createElement("span", {
-      id: `${id}_error`,
-      className: "form-control-invalid"
-    }, customErrorMsg));
+    }))));
   }
 
 }
 
 LabelledRichTextEditor.propTypes = {
+  isInvalid: PropTypes.bool,
   id: PropTypes.string,
   label: PropTypes.string,
   customErrorMsg: PropTypes.string,
@@ -358,7 +279,6 @@ LabelledRichTextEditor.propTypes = {
   hideLabel: PropTypes.string,
   wrapperTag: PropTypes.string,
   required: PropTypes.bool,
-  useNativeValidation: PropTypes.bool,
   edit: PropTypes.bool,
   requiredGroup: PropTypes.bool,
   labelClassName: PropTypes.string,
