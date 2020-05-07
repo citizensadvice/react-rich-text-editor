@@ -15,9 +15,7 @@ import initialValue from './value.json'; // import EditorLinkModal from './compo
 import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar'; // import LabelledTextarea from '../LabelledTextarea';
 
-import './index.css'; // retrieve content from the local storage or a default
-
-const localStorageContent = localStorage.getItem('content') || '<p><p/>';
+import './index.css';
 const html = new Html({
   rules
 });
@@ -33,36 +31,6 @@ class LabelledRichTextEditor extends React.Component {
     _defineProperty(this, "editor1", React.createRef());
 
     _defineProperty(this, "editor2", React.createRef());
-
-    _defineProperty(this, "convertHtmlToString", content => {
-      // convert string into html format
-      const document = new DOMParser().parseFromString(content, 'text/html'); // get only string content from that html
-
-      return deserialize(document.body);
-    });
-
-    _defineProperty(this, "getValue", () => {
-      const {
-        edit,
-        summaryText
-      } = this.props; // console.log(summaryText);
-
-      const localStorageContentAsString = this.convertHtmlToString(localStorageContent); // convert text to value
-
-      const summaryTextAsValue = html.deserialize(summaryText);
-      const localStorageAsValue = html.deserialize(localStorageContent);
-
-      if (edit) {
-        // check if the local storage content is for the correct editor
-        if (localStorageContentAsString === summaryText) {
-          return html.deserialize(localStorageContent);
-        }
-
-        return html.deserialize(summaryText);
-      }
-
-      return Value.fromJSON(initialValue);
-    });
 
     _defineProperty(this, "ref1", editor1 => {
       this.editor1 = editor1;
@@ -319,9 +287,8 @@ class LabelledRichTextEditor extends React.Component {
     this.state = {
       // convert plain text into immutable object that the editor accepts as value
       // we must have different values for each editor instace
-      value1: this.props.edit ? Plain.deserialize(this.props.text) : Value.fromJSON(initialValue1),
-      value2: this.props.edit ? Plain.deserialize(this.props.text) : Value.fromJSON(initialValue2),
-      value: this.getValue(),
+      value1: this.props.edit ? html.serialize(this.props.text) : Value.fromJSON(initialValue1),
+      value2: this.props.edit ? html.serialize(this.props.text) : Value.fromJSON(initialValue2),
       lockedForm: this.props.lockedForm,
       activeEditor: 1,
       isFocused: false,
@@ -334,12 +301,17 @@ class LabelledRichTextEditor extends React.Component {
 
   componentDidMount() {
     document.addEventListener('mousedown', this.handleClickInAndOut);
-    console.log('value received', this.state.value.document.text);
   }
 
   componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClickInAndOut);
-  }
+  } // convertHtmlToString = (content) => {
+  //   // convert string into html format
+  //   const document = new DOMParser().parseFromString(content, 'text/html');
+  //   // get only string content from that html
+  //   return deserialize(document.body);
+  // }
+
 
   render() {
     const {
