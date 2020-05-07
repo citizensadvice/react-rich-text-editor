@@ -5,6 +5,7 @@ import './index.scss';
 import { rules } from './RichTextEditor/utils';
 
 const html = new Html({ rules });
+const isInvalid = false;        
 
 export function App() {
   const [contents, setContents] = useState();
@@ -12,6 +13,7 @@ export function App() {
   return (
     <>
       <RichTextEditor
+        isInvalid={isInvalid}
         onEditorChange={(value) => setContents(html.serialize(value))}
       />
 
