@@ -1,24 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Html from 'slate-html-serializer';
 import RichTextEditor from './RichTextEditor';
 import './index.scss';
+import { rules } from './RichTextEditor/utils';
 
-function App() {
-  const containerStyles = {
-    maxWidth: '43.75rem',
-    marginLeft: 'auto',
-    marginRight: 'auto',
-    marginTop: '3rem',
-  };
+const html = new Html({ rules });
+const isInvalid = false;        
 
-  const isInvalid = false;
+export function App() {
+  const [contents, setContents] = useState();
 
   return (
-    <div style={containerStyles}>
+    <>
       <RichTextEditor
         isInvalid={isInvalid}
+        onEditorChange={(value) => setContents(html.serialize(value))}
       />
-    </div>
+
+      <p>
+        <label htmlFor="output">
+          Current value
+        </label>
+        <output>
+          <pre>
+            {contents}
+          </pre>
+        </output>
+      </p>
+    </>
   );
 }
-
-export default App;
