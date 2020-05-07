@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Slate based rich text editor",
   "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "babel": {
     "presets": [
       "@babel/preset-react"
@@ -19,7 +22,9 @@
     "lint:js": "eslint . --ext .js --ext .jsx",
     "lint:styles": "stylelint \"**/*.scss\"",
     "build:styles": "npm run lint:styles && node-sass src/components/RichTextEditor/component.scss src/components/RichTextEditor/component.min.css --output-style compressed",
-    "prepare": "npm run build:styles && npm run lint:js && rm -rf dist && mkdir dist && babel src/components/RichTextEditor -d dist --copy-files"
+    "prepare": "npm run build:styles && npm run lint:js && rm -rf dist && mkdir dist && babel src/components/RichTextEditor -d dist --copy-files",
+    "release:preview": "npm run prepare && np --preview",
+    "release": "npm run prepare && np"
   },
   "dependencies": {
     "@babel/cli": "^7.8.4",
@@ -56,6 +61,7 @@
     "eslint-plugin-react-hooks": "^3.0.0",
     "gh-pages": "^2.2.0",
     "node-sass": "^4.13.1",
+    "np": "^6.2.3",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
