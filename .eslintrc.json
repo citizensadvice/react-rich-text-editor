@@ -14,7 +14,7 @@
   "rules": {
     "import/extensions": ["error", "never", { "json": "always" }],
     "import/prefer-default-export": "off",
-    "import/no-default-export": "error",
+    "import/no-default-export": "off",
     "object-curly-newline": ["error", { "consistent": true }],
     "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "varsIgnorePattern": "^_\\d*$", "argsIgnorePattern": "^_\\d*$" }],
     "no-console": ["error", { "allow": ["error"] }],
@@ -22,6 +22,7 @@
     "react-hooks/exhaustive-deps": "error",
     "react/jsx-props-no-spreading": "off",
     "react/no-unused-prop-types": "off",
+    "react/require-default-props": "off",
     "react/forbid-prop-types": "off",
     "jsx-a11y/aria-role": "off",
     "jsx-a11y/aria-proptypes": "off",
