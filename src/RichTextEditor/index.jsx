@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Editor } from 'slate-react';
-import Plain from 'slate-plain-serializer';
 import Html from 'slate-html-serializer';
 
 import { Value } from 'slate';
@@ -14,7 +13,6 @@ import initialValue from './value.json';
 // import EditorLinkModal from './components/EditorLinkModal';
 import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar';
-// import LabelledTextarea from '../LabelledTextarea';
 import './index.scss';
 
 
