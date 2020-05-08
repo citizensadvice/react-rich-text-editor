@@ -14,7 +14,7 @@ import initialValue from './value.json'; // import EditorLinkModal from './compo
 import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar'; // import LabelledTextarea from '../LabelledTextarea';
 
-import './index.scss';
+import './index.css';
 const html = new Html({
   rules
 });
