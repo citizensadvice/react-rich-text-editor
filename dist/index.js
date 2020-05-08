@@ -186,7 +186,6 @@ class LabelledRichTextEditor extends React.Component {
       // we must have different values for each editor instace
       value1: this.props.edit ? Plain.deserialize(this.props.text) : Value.fromJSON(initialValue1),
       value2: this.props.edit ? Plain.deserialize(this.props.text) : Value.fromJSON(initialValue2),
-      value: this.getValue(),
       lockedForm: this.props.lockedForm,
       activeEditor: 1,
       isFocused: false,
