@@ -1,23 +1,8 @@
-/**
- * React based modals dialogs
- *
- * Usage:
- *
- * 1. As a React element
- * <Modal title="Modal title" onClose={() => this.setState({ showModal: false})}>
- *   <div>Modal content</div>
- * </Modal>
- *
- * 2. Event based:
- * <button type="button" data-modal="modal-id">Open modal</button>
- * <template id="modal-id" title="Title"><div>Modal content</div></template>
- */
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import modalContainer from './modal_container';
-import Dialog from '../Dialog/index';
-import './index.scss';
+import Dialog from '../Dialog';
+import './modal.scss';
 
 class Modal extends React.Component {
   UNSAFE_componentWillMount() {

@@ -11,11 +11,10 @@ import { onLinkPaste, renderInline } from './link';
 import { renderMark, renderBlock, rules } from './utils';
 import initialValue from './value.json';
 
-// import EditorLinkModal from './components/EditorLinkModal';
 import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar';
 // import LabelledTextarea from '../LabelledTextarea';
-import './index.css';
+import './component.scss';
 import EditorLinkModal from './components/EditorLinkModal';
 
 const html = new Html({ rules });

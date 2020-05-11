@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import { wrapLink } from '../link';
-import Modal from '../../src/RichTextEditor/Modal';
+import Modal from './Modal/Modal';
 
 function EditorLinkModal(props) {
   const ref = useRef();
@@ -48,7 +48,7 @@ function EditorLinkModal(props) {
       .command(wrapLink, url);
   }
 
-  async function saveAndCloseModal(e) {
+  async function saveAndCloseModal() {
     const { editor, hasText, closeModal } = props;
     if (hasText) {
       await makeLink(editor, inputUrl);
@@ -145,7 +145,7 @@ function EditorLinkModal(props) {
         <div className="modal-footer">
           <button
             type="submit"
-            className="btn btn btn-outline-success"
+            className="btn btn-success"
             aria-label="Save link"
             title="Save link"
             onClick={saveAndCloseModal}

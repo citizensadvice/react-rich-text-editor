@@ -22,7 +22,7 @@
     "lint:js": "eslint . --ext .js --ext .jsx",
     "lint:styles": "stylelint \"**/*.scss\"",
     "build:styles": "npm run lint:styles && node-sass src/components/RichTextEditor/component.scss src/components/RichTextEditor/component.css --output-style compressed",
-    "prepare": "npm run build:styles && npm run lint:js && rm -rf dist && mkdir dist && babel src/components/RichTextEditor -d dist --copy-files",
+    "prepare": "npm run build:styles && rm -rf dist && mkdir dist && babel src/components/RichTextEditor -d dist --copy-files",
     "release:preview": "npm run prepare && np --preview",
     "release": "npm run prepare && np"
   },

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import IconSvg from '../IconSvg';
 
 const closeButtonSelector = '[data-dismiss=modal]:not(:disabled)';
 
@@ -158,7 +157,7 @@ Dialog.propTypes = {
 Dialog.defaultProps = {
   classNameSpace: 'modal',
   hideTitle: false,
-  closeLabel: <>Close window <IconSvg name="bold" /></>,
+  closeLabel: <>Close window</>,
   modalRef: () => {},
   isActive: () => false,
   onClose: () => {},
