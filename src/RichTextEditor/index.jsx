@@ -17,9 +17,6 @@ import EditorToolbar from './components/EditorToolbar';
 // import LabelledTextarea from '../LabelledTextarea';
 import './index.scss';
 
-
-// retrieve content from the local storage or a default
-const localStorageContent = localStorage.getItem('content') || '<p><p/>';
 const html = new Html({ rules });
 
 const initialValue1 = Value.fromJSON(initialValue);
@@ -37,7 +34,6 @@ class LabelledRichTextEditor extends React.Component {
       // we must have different values for each editor instace
       value1: this.props.edit ? Plain.deserialize(this.props.text) : Value.fromJSON(initialValue1),
       value2: this.props.edit ? Plain.deserialize(this.props.text) : Value.fromJSON(initialValue2),
-      value: this.getValue(),
       lockedForm: this.props.lockedForm,
       activeEditor: 1,
       isFocused: false,
@@ -45,33 +41,6 @@ class LabelledRichTextEditor extends React.Component {
       modalIsOpen: false,
       isKeyShiftTab: false,
     };
-  }
-
-  componentDidMount() {
-    console.log('value received', this.state.value.document.text);
-  }
-
-  convertHtmlToString = (content) => {
-    // convert string into html format
-    const document = new DOMParser().parseFromString(content, 'text/html');
-    // get only string content from that html
-    return deserialize(document.body);
-  }
-
-  getValue = () => {
-    const { edit, summaryText } = this.props;
-    // console.log(summaryText);
-    const localStorageContentAsString = this.convertHtmlToString(localStorageContent);
-    // convert text to value
-    const summaryTextAsValue = html.deserialize(summaryText);
-    const localStorageAsValue = html.deserialize(localStorageContent);
-
-    if (edit) {
-      // check if the local storage content is for the correct editor
-      if (localStorageContentAsString === summaryText) {
-        return html.deserialize(localStorageContent);
-      } return html.deserialize(summaryText);
-    } return Value.fromJSON(initialValue);
   }
 
   ref1 = (editor1) => {
@@ -97,17 +66,12 @@ class LabelledRichTextEditor extends React.Component {
 
   handleEditorChange = (key, { value }) => {
     const { value1, value2 } = this.state;
-    let content;
 
     if (key === 1) {
-      this.setState({ value1: value }, () => this.onEditorChange(value1));
-      content = html.serialize(value1);
+      this.setState({ value1: value }, () => this.onEditorChange(html.serialize(value1)));
     } else if (key === 2) {
-      this.setState({ value2: value }, () => this.onEditorChange(value2));
-      content = html.serialize(value2);
+      this.setState({ value2: value }, () => this.onEditorChange(html.serialize(value2)));
     } this.setState({ activeEditor: key });
-
-    localStorage.setItem('content', content);
   }
 
   setClassOfContainer = (className) => {
