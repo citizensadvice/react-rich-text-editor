@@ -1,6 +1,6 @@
 import React from 'react';
 import { getEventTransfer } from 'slate-react';
-import LinkNewWindow from './LinkNewWindow/index';
+import LinkNewWindow from './components/LinkNewWindow';
 
 
 export function wrapLink(editor, href) {

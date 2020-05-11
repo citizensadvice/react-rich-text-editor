@@ -1,10 +1,9 @@
 import React from 'react';
-import RichTextEditor from './RichTextEditor';
-import './index.scss';
+import RichTextEditor from '../RichTextEditor';
 
 const isInvalid = false;
 
-export function App() {
+export default function App() {
   return (
     <RichTextEditor
       isInvalid={isInvalid}

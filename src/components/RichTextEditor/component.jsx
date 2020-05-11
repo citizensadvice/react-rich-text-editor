@@ -15,8 +15,6 @@ import initialValue from './value.json';
 import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar';
 // import LabelledTextarea from '../LabelledTextarea';
-import './index.css';
-
 
 // retrieve content from the local storage or a default
 const localStorageContent = localStorage.getItem('content') || '<p><p/>';
@@ -202,10 +200,8 @@ class LabelledRichTextEditor extends React.Component {
     const activeEl = document.activeElement;
     // const showValidation = isInvalid && required && useNativeValidation;
     const rteClass = classNames({
-      'rte-form-control is-focused': isFocused,
-      // 'rte-form-control is-invalid': showValidation,
-      // 'rte-form-control': !isFocused && !showValidation,
-      'rte-form-control full-screen': isFullScreen,
+      'is-focused': isFocused,
+      'full-screen': isFullScreen,
     });
     return (
       <div className="form-group">
@@ -224,7 +220,7 @@ class LabelledRichTextEditor extends React.Component {
         <div className="notes" id={`wrapper_${id}`}>
           <div
             ref={this.containerRef}
-            className={rteClass}
+            className={`rte-form-control ${rteClass}`}
             id={`${id}_editor_container`}
             onFocus={this.onContainerFocus}
             onBlur={this.onContainerBlur}
