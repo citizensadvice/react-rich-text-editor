@@ -163,7 +163,6 @@ class LabelledRichTextEditor extends React.Component {
     const activeEl = document.activeElement;
 
     const rteClass = classNames({
-      'is-invalid': isInvalid,
       'is-focused': isFocused,
       'full-screen': isFullScreen,
     });

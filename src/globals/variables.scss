@@ -1,3 +1,4 @@
+// colours
 $color-apple: #008a25;
 $color-apple-d10: darken($color-apple, 10%);
 $color-black: #000;
@@ -17,9 +18,7 @@ $color-tomato-d10: darken($color-tomato, 10%);
 $color-squash: #f5a623;
 $color-squash-d35: darken($color-squash, 35%);
 
-$h2-font-size: rem(24);
-
-
+// measurements
 $px1: 1px;
 $px2: 2px;
 $px3: 3px;
@@ -34,3 +33,6 @@ $px5: 5px;
 @function em($value) {
   @return 1em * $value / 16;
 }
+
+// typography
+$h2-font-size: rem(24);
