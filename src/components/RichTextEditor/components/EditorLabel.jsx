@@ -8,16 +8,20 @@ const EditorLabel = ({
   hideLabel,
   wrapperTag,
   requiredGroup,
-  labelClassName
+  labelClassName,
 }) => {
   const htmlTag = wrapperTag === 'fieldset' ? 'legend' : 'label';
-  return React.createElement(htmlTag, {
-    className: hideLabel ? 'sr-only' : labelClassName,
-    htmlFor: htmlTag === 'label' ? id : null
-  }, label, required || requiredGroup ? ' ' : null, required || requiredGroup ? /*#__PURE__*/React.createElement("abbr", {
-    title: "required",
-    className: "required-marker"
-  }, "*") : null);
+
+  return React.createElement(
+    htmlTag,
+    {
+      className: hideLabel ? 'sr-only' : labelClassName,
+      htmlFor: htmlTag === 'label' ? id : null,
+    },
+    label,
+    required || requiredGroup ? ' ' : null,
+    required || requiredGroup ? <abbr title="required" className="required-marker">*</abbr> : null,
+  );
 };
 
 EditorLabel.propTypes = {
@@ -27,6 +31,7 @@ EditorLabel.propTypes = {
   hideLabel: PropTypes.string,
   wrapperTag: PropTypes.string,
   requiredGroup: PropTypes.bool,
-  labelClassName: PropTypes.string
+  labelClassName: PropTypes.string,
 };
+
 export default EditorLabel;

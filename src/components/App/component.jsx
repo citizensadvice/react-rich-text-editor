@@ -1,13 +1,13 @@
+// import './index.scss';
 import React, { useState } from 'react';
 import Html from 'slate-html-serializer';
-import RichTextEditor from './RichTextEditor';
-import './index.scss';
-import { rules } from './RichTextEditor/utils';
+import RichTextEditor from '../RichTextEditor';
+import { rules } from '../RichTextEditor/utils';
 
 const html = new Html({ rules });
-const isInvalid = false;        
+const isInvalid = false;
 
-export function App() {
+export default function App() {
   const [contents, setContents] = useState();
 
   return (
@@ -17,7 +17,7 @@ export function App() {
         onEditorChange={(value) => setContents(html.serialize(value))}
       />
 
-      <p>
+      <div style={{ marginTop: '1.5rem' }}>
         <label htmlFor="output">
           Current value
         </label>
@@ -26,7 +26,7 @@ export function App() {
             {contents}
           </pre>
         </output>
-      </p>
+      </div>
     </>
   );
 }
