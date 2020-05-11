@@ -2,10 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { wrapLink } from '../link';
-
-import Modal from '../../Modal';
-import Button from '../../Button';
-import LabelledInput from '../../LabelledInput';
+import Modal from '../../src/RichTextEditor/Modal';
 
 function EditorLinkModal(props) {
   const [inputUrl, setInputUrl] = useState('');
@@ -50,33 +47,53 @@ function EditorLinkModal(props) {
       onClose={closeModal}
       className="rte-link-modal"
     >
-      <div>
+      <div className="rte-link-modal-main">
         {!hasText && (
-          <LabelledInput
-            id="rte-link-text"
-            label="Enter the text of the link"
-            name="rte-link-text"
-            value={inputText}
-            onChange={updateText}
-          />
+          <div className="form-control">
+            <label
+              htmlFor="rte-link-text"
+              className="label"
+            >
+              Enter the text of the link
+            </label>
+            <input
+              type="text"
+              id="rte-link-text"
+              className="form-control"
+              name="rte-link-text"
+              value={inputText}
+              onChange={updateText}
+            />
+          </div>
         )}
-        <LabelledInput
-          id="rte-link-url"
-          label="Enter the URL of the link. Please include the protocol (e.g. http://, https://, ftp://)"
-          name="rte-link-url"
-          value={inputUrl}
-          onChange={updateUrl}
-        />
+        <div className="form-control">
+          <label
+            htmlFor="rte-link-url"
+            className="label"
+          >
+            Enter the URL of the link. Please include the protocol (e.g. http://, https://, ftp://)
+          </label>
+          <input
+            type="text"
+            id="rte-link-url"
+            className="form-control"
+            name="rte-link-url"
+            value={inputUrl}
+            onChange={updateUrl}
+          />
+        </div>
       </div>
-      <Button
-        type="submit"
-        className="btn btn-success"
-        aria-label="Save link"
-        title="Save link"
-        onClick={saveAndCloseModal}
-      >
-        Save link
-      </Button>
+      <div className="modal-footer">
+        <button
+          type="submit"
+          className="btn btn btn-outline-success"
+          aria-label="Save link"
+          title="Save link"
+          onClick={saveAndCloseModal}
+        >
+          Save link
+        </button>
+      </div>
     </Modal>
   );
 }

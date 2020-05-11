@@ -8,7 +8,7 @@ import Html from 'slate-html-serializer';
 import { Value } from 'slate';
 import { IS_BOLD_HOTKEY, IS_ITALIC_HOTKEY, IS_UNDERLINED_HOTKEY } from './constants';
 import { onLinkPaste, renderInline } from './link';
-import { renderMark, renderBlock, rules, deserialize } from './utils';
+import { renderMark, renderBlock, rules } from './utils';
 import initialValue from './value.json';
 
 // import EditorLinkModal from './components/EditorLinkModal';
@@ -16,6 +16,7 @@ import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar';
 // import LabelledTextarea from '../LabelledTextarea';
 import './index.scss';
+import EditorLinkModal from './components/EditorLinkModal';
 
 const html = new Html({ rules });
 
@@ -170,12 +171,11 @@ class LabelledRichTextEditor extends React.Component {
     return (
       <div className="form-group">
         {modalIsOpen && (
-          // <EditorLinkModal
-          //   closeModal={this.closeModal}
-          //   hasText={activeEditor === 1 ? editor1.value.selection.isExpanded : editor2.value.selection.isExpanded}
-          //   editor={activeEditor === 1 ? editor1 : editor2}
-          // />
-          <div>Editor link modal</div>
+          <EditorLinkModal
+            closeModal={this.closeModal}
+            hasText={activeEditor === 1 ? editor1.value.selection.isExpanded : editor2.value.selection.isExpanded}
+            editor={activeEditor === 1 ? editor1 : editor2}
+          />
         )}
 
         <EditorLabel {...this.props} />

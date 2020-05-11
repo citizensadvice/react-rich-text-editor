@@ -1,3 +1,5 @@
+$color-apple: #008a25;
+$color-apple-d10: darken($color-apple, 10%);
 $color-black: #000;
 $color-black-l95: lighten($color-black, 95%);
 $color-black-l85: lighten($color-black, 85%);
@@ -13,6 +15,7 @@ $color-lavender: #bd10e0;
 $color-tomato: #e32222;
 $color-tomato-d10: darken($color-tomato, 10%);
 $color-squash: #f5a623;
+$color-squash-d35: darken($color-squash, 35%);
 
 $h2-font-size: rem(24);
 
@@ -22,3 +25,12 @@ $px2: 2px;
 $px3: 3px;
 $px4: 4px;
 $px5: 5px;
+
+// Convert pixels to rems
+@function rem($value) {
+  @return 1rem * $value / 16;
+}
+
+@function em($value) {
+  @return 1em * $value / 16;
+}
