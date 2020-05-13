@@ -1,0 +1,22 @@
+@import '../../../../globals/variables.scss';
+
+.form-control {
+  border-radius: 0;
+  margin: 0;
+  background: none;
+  height: auto;
+  
+  &[aria-invalid=true] {
+    border-color: $color-tomato;
+  }
+}
+.form-control-invalid {
+  display: table;
+  color: $color-white;
+  padding: rem(4) rem(11) rem(5);
+  position: relative;
+  z-index: 1;
+  background: $color-tomato;
+  border-color: $color-tomato;
+  border-width: 0 $px1;
+}
