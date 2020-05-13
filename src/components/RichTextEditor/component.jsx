@@ -11,7 +11,6 @@ import { onLinkPaste, renderInline } from './link';
 import { renderMark, renderBlock, rules } from './utils';
 import initialValue from './value.json';
 
-import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar';
 
 const html = new Html({ rules });
@@ -28,7 +27,6 @@ class LabelledRichTextEditor extends React.Component {
     this.state = {
       editorValue: edit ? Plain.deserialize(text) : Value.fromJSON(initialValue),
       lockedForm,
-      activeEditor: 1,
       isFocused: false,
       isFullScreen: false,
       modalIsOpen: false,
@@ -53,14 +51,13 @@ class LabelledRichTextEditor extends React.Component {
     if (onEditorChange) onEditorChange(value);
   }
 
-  handleEditorChange = (key, { value }) => {
+  handleEditorChange = ({ value }) => {
     const { editorValue } = this.state;
 
-    if (key === 1) {
-      this.setState({ editorValue: value }, () => this.onEditorChange(html.serialize(editorValue)));
-    }
-
-    this.setState({ activeEditor: key });
+    this.setState(
+      { editorValue: value },
+      () => this.onEditorChange(html.serialize(editorValue)),
+    );
   }
 
   setClassOfContainer = (className) => {
@@ -97,29 +94,21 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   onContainerFocus = (e) => {
+    const { isFullScreen } = this.state;
+
     if (
       this.containerRef.current.contains(e.target)
-      && !this.state.isFullScreen
+      && !isFullScreen
     ) {
       this.setClassOfContainer('rte-form-control is-focused');
     }
   }
 
   onContainerBlur = () => {
-    const { activeEditor } = this.state;
-    let text;
-
-    if (activeEditor === 1) {
-      text = this.editor.value.document.text;
-    }
-
     const { isFullScreen } = this.state;
 
     if (!isFullScreen) {
-      if (activeEditor === 1) {
-        this.editor.blur();
-      }
-
+      this.editor.blur();
       setTimeout(() => this.setState({ isFocused: false }), 0);
     }
   }
@@ -137,14 +126,8 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   render() {
-    const {
-      isInvalid, id, events, label,
-    } = this.props;
-
-    const {
-      editorValue, isFocused, isFullScreen, modalIsOpen, activeEditor, lockedForm,
-    } = this.state;
-
+    const { isInvalid, id, events, labelledby } = this.props;
+    const { editorValue, isFocused, isFullScreen, modalIsOpen, lockedForm } = this.state;
     const { editor } = this;
     const activeEl = document.activeElement;
 
@@ -156,8 +139,6 @@ class LabelledRichTextEditor extends React.Component {
     return (
       <div className="form-group">
         {modalIsOpen && <div>Editor link modal</div>}
-
-        <EditorLabel {...this.props} />
 
         <div className="notes" id={`wrapper_${id}`}>
           <div
@@ -185,13 +166,13 @@ class LabelledRichTextEditor extends React.Component {
               spellCheck
               contentEditable="true"
               role="textbox"
-              aria-labelledby={label}
+              aria-labelledby={labelledby}
               aria-describedby={`${id}_error`}
               aria-invalid={isInvalid}
               readOnly={lockedForm}
               ref={this.ref}
               value={editorValue}
-              onChange={(e) => this.handleEditorChange(activeEditor, e)}
+              onChange={this.handleEditorChange}
               onKeyDown={this.onEditorKeyDown}
               onBlur={this.onEditorBlur}
               onPaste={onLinkPaste}
@@ -209,9 +190,8 @@ class LabelledRichTextEditor extends React.Component {
 LabelledRichTextEditor.propTypes = {
   isInvalid: PropTypes.bool,
   id: PropTypes.string,
-  label: PropTypes.string,
-  customErrorMsg: PropTypes.string,
   text: PropTypes.string,
+  labelledby: PropTypes.string,
   lockedForm: PropTypes.bool,
   onEditorChange: PropTypes.func,
   hideLabel: PropTypes.string,
@@ -228,7 +208,6 @@ LabelledRichTextEditor.defaultProps = {
   id: 'editor',
   required: false,
   lockedForm: false,
-  customErrorMsg: 'Please complete this field',
 };
 
 export default LabelledRichTextEditor;
