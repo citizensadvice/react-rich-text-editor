@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-import { wrapLink } from '../link';
-import Modal from './Modal/Modal';
+import { wrapLink } from '../../link';
+import Modal from '../Modal/Modal';
+import './editor-link-modal.scss';
 
 function EditorLinkModal(props) {
   const ref = useRef();

@@ -15,7 +15,7 @@ import EditorLabel from './components/EditorLabel';
 import EditorToolbar from './components/EditorToolbar';
 // import LabelledTextarea from '../LabelledTextarea';
 import './component.scss';
-import EditorLinkModal from './components/EditorLinkModal';
+import EditorLinkModal from './components/EditorLinkModal/EditorLinkModal';
 
 const html = new Html({ rules });
 

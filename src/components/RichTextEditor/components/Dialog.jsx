@@ -122,7 +122,7 @@ class Dialog extends React.Component {
         <div className={modalClasses} role="document">
           <div className={`${classNameSpace}-content`}>
             <div className={`${classNameSpace}-header`}>
-              <h1 className={`${classNameSpace}-title${headingClass}`} id={`${id}_title`}>{title}</h1>
+              <h4 className={`${classNameSpace}-title${headingClass}`} id={`${id}_title`}>{title}</h4>
               {this.props.actions}
               {!undismissable && (
                 <button type="button" className={`${classNameSpace}-close`} onClick={() => onClose()}>

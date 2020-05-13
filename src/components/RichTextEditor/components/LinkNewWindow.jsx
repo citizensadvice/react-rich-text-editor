@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const safeHost = /(^|\.)citizensadvice\.org\.uk$/;
 
-const location = window.location;
+const { location } = window;
 
 function LinkNewWindow({ children, href, ...rest }) {
   const rel = ['noopener'];
