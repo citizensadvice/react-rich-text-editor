@@ -16,23 +16,17 @@ import EditorToolbar from './components/EditorToolbar';
 
 const html = new Html({ rules });
 
-const initialValue1 = Value.fromJSON(initialValue);
-const initialValue2 = Value.fromJSON(initialValue);
-
 class LabelledRichTextEditor extends React.Component {
   containerRef = React.createRef();
 
-  editor1 = React.createRef();
-
-  editor2 = React.createRef();
+  editor = React.createRef();
 
   constructor(props) {
     super(props);
     const { edit, text, lockedForm } = this.props;
 
     this.state = {
-      value1: edit ? Plain.deserialize(text) : Value.fromJSON(initialValue1),
-      value2: edit ? Plain.deserialize(text) : Value.fromJSON(initialValue2),
+      editorValue: edit ? Plain.deserialize(text) : Value.fromJSON(initialValue),
       lockedForm,
       activeEditor: 1,
       isFocused: false,
@@ -42,12 +36,8 @@ class LabelledRichTextEditor extends React.Component {
     };
   }
 
-  ref1 = (editor1) => {
-    this.editor1 = editor1;
-  }
-
-  ref2 = (editor2) => {
-    this.editor2 = editor2;
+  ref = (editor) => {
+    this.editor = editor;
   }
 
   handlingStateFromChild = (newState) => {
@@ -64,13 +54,13 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   handleEditorChange = (key, { value }) => {
-    const { value1, value2 } = this.state;
+    const { editorValue } = this.state;
 
     if (key === 1) {
-      this.setState({ value1: value }, () => this.onEditorChange(html.serialize(value1)));
-    } else if (key === 2) {
-      this.setState({ value2: value }, () => this.onEditorChange(html.serialize(value2)));
-    } this.setState({ activeEditor: key });
+      this.setState({ editorValue: value }, () => this.onEditorChange(html.serialize(editorValue)));
+    }
+
+    this.setState({ activeEditor: key });
   }
 
   setClassOfContainer = (className) => {
@@ -120,18 +110,14 @@ class LabelledRichTextEditor extends React.Component {
     let text;
 
     if (activeEditor === 1) {
-      text = this.editor1.value.document.text;
-    } else if (activeEditor === 2) {
-      text = this.editor1.value.document.text;
+      text = this.editor.value.document.text;
     }
 
     const { isFullScreen } = this.state;
 
     if (!isFullScreen) {
       if (activeEditor === 1) {
-        this.editor1.blur();
-      } else if (activeEditor === 2) {
-        this.editor2.blur();
+        this.editor.blur();
       }
 
       setTimeout(() => this.setState({ isFocused: false }), 0);
@@ -156,10 +142,10 @@ class LabelledRichTextEditor extends React.Component {
     } = this.props;
 
     const {
-      value1, value2, isFocused, isFullScreen, modalIsOpen, activeEditor, lockedForm,
+      editorValue, isFocused, isFullScreen, modalIsOpen, activeEditor, lockedForm,
     } = this.state;
 
-    const { editor1, editor2 } = this;
+    const { editor } = this;
     const activeEl = document.activeElement;
 
     const rteClass = classNames({
@@ -185,8 +171,8 @@ class LabelledRichTextEditor extends React.Component {
             {!!events && events}
 
             <EditorToolbar
-              value={activeEditor === 1 ? value1 : value2}
-              ref={activeEditor === 1 ? editor1 : editor2}
+              value={editorValue}
+              ref={editor}
               passedState={this.state}
               isLocked={lockedForm}
               activeEl={activeEl}
@@ -203,8 +189,8 @@ class LabelledRichTextEditor extends React.Component {
               aria-describedby={`${id}_error`}
               aria-invalid={isInvalid}
               readOnly={lockedForm}
-              ref={activeEditor === 1 ? this.ref1 : this.ref2}
-              value={activeEditor === 1 ? value1 : value2}
+              ref={this.ref}
+              value={editorValue}
               onChange={(e) => this.handleEditorChange(activeEditor, e)}
               onKeyDown={this.onEditorKeyDown}
               onBlur={this.onEditorBlur}
