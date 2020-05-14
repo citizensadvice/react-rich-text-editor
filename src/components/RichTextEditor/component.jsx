@@ -12,6 +12,11 @@ import { renderMark, renderBlock, rules } from './utils';
 import initialValue from './value.json';
 
 import EditorToolbar from './components/EditorToolbar';
+import EditorLabel from './components/EditorLabel';
+import EditorToolbar from './components/EditorToolbar';
+// import LabelledTextarea from '../LabelledTextarea';
+import './component.scss';
+import EditorLinkModal from './components/EditorLinkModal/EditorLinkModal';
 
 const html = new Html({ rules });
 
@@ -95,11 +100,7 @@ class LabelledRichTextEditor extends React.Component {
 
   onContainerFocus = (e) => {
     const { isFullScreen } = this.state;
-
-    if (
-      this.containerRef.current.contains(e.target)
-      && !isFullScreen
-    ) {
+    if (this.containerRef.current.contains(e.target) && !isFullScreen) {
       this.setClassOfContainer('rte-form-control is-focused');
     }
   }
@@ -138,8 +139,17 @@ class LabelledRichTextEditor extends React.Component {
 
     return (
       <div className="form-group">
-        {modalIsOpen && <div>Editor link modal</div>}
+        {modalIsOpen && (
+          <EditorLinkModal
+            closeModal={this.closeModal}
+            hasText={activeEditor === 1 ? editor1.value.selection.isExpanded : editor2.value.selection.isExpanded}
+            editor={activeEditor === 1 ? editor1 : editor2}
+          />
+        )}
 
+        <EditorLabel {...this.props} />
+
+        {/* change classname from notes to something more suggestive */}
         <div className="notes" id={`wrapper_${id}`}>
           <div
             ref={this.containerRef}
