@@ -12,22 +12,16 @@ import { renderMark, renderBlock, rules } from './utils';
 import initialValue from './value.json';
 
 import EditorToolbar from './components/EditorToolbar';
-import EditorLabel from './components/EditorLabel';
-import EditorToolbar from './components/EditorToolbar';
-// import LabelledTextarea from '../LabelledTextarea';
-import './component.scss';
 import EditorLinkModal from './components/EditorLinkModal/EditorLinkModal';
 
 const html = new Html({ rules });
 
 class LabelledRichTextEditor extends React.Component {
-  containerRef = React.createRef();
-
-  editor = React.createRef();
-
   constructor(props) {
     super(props);
     const { edit, text, lockedForm } = this.props;
+    this.containerRef = React.createRef();
+    this.editor = React.createRef();
 
     this.state = {
       editorValue: edit ? Plain.deserialize(text) : Value.fromJSON(initialValue),
@@ -142,14 +136,11 @@ class LabelledRichTextEditor extends React.Component {
         {modalIsOpen && (
           <EditorLinkModal
             closeModal={this.closeModal}
-            hasText={activeEditor === 1 ? editor1.value.selection.isExpanded : editor2.value.selection.isExpanded}
-            editor={activeEditor === 1 ? editor1 : editor2}
+            hasText={editor.value.selection.isExpanded}
+            editor={editor}
           />
         )}
 
-        <EditorLabel {...this.props} />
-
-        {/* change classname from notes to something more suggestive */}
         <div className="notes" id={`wrapper_${id}`}>
           <div
             ref={this.containerRef}
