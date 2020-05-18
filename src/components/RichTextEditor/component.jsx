@@ -60,9 +60,7 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   setClassOfContainer = (className) => {
-    const { id } = this.props;
-    const container = document.getElementById(`${id}_editor_container`);
-    container.classList = [className];
+    this.containerRef.current.classList = [className];
   }
 
   onEditorKeyDown = (event, editor, next) => { // eslint-disable-line consistent-return
@@ -141,7 +139,7 @@ class LabelledRichTextEditor extends React.Component {
           />
         )}
 
-        <div className="notes" id={`wrapper_${id}`}>
+        <div className={`notes ${classNames({ 'full-screen': isFullScreen })}`} id={`wrapper_${id}`}>
           <div
             ref={this.containerRef}
             className={`rte-form-control ${rteClass}`}
