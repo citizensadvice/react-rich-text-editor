@@ -1,5 +1,7 @@
 import React from 'react';
 import { getEventTransfer } from 'slate-react';
+import Html from 'slate-html-serializer';
+import { rules } from './utils';
 import LinkNewWindow from './components/LinkNewWindow';
 
 
@@ -20,16 +22,26 @@ export const hasLinks = (value) => value.inlines.some((inline) => inline.type ==
 
 /* eslint-disable consistent-return */
 export const onLinkPaste = (event, editor, next) => {
-  if (editor.value.selection.isCollapsed) return next();
   const textIsLink = hasLinks(editor.value);
 
   const transfer = getEventTransfer(event);
   const { type, text } = transfer;
+
   if (type !== 'text' && type !== 'html') return next();
+
+  if (type === 'html') {
+    event.preventDefault();
+    const html = new Html({ rules });
+    const { document } = html.deserialize(transfer.html);
+
+    editor.insertFragment(document);
+  }
 
   if (textIsLink) {
     editor.command(unwrapLink);
-  } else editor.command(wrapLink, text);
+  } else if (!textIsLink) editor.command(wrapLink, text);
+
+  if (editor.value.selection.isCollapsed) return next();
 };
 
 const onClick = (e, href) => {
@@ -42,7 +54,7 @@ export const renderInline = (props, editor, next) => {
 
   // remove the ref that's passed in from editor as function components cannot be given refs
   // without using React.forwardRef().
-  const { ref, ...remainingAttributes } = attributes;
+  const { ...remainingAttributes } = attributes;
 
   switch (node.type) {
     case 'link': {
