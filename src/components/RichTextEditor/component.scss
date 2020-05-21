@@ -1,16 +1,5 @@
 @import "../../globals/variables.scss";
 
-.notes {
-  // &.full-screen {
-  //   bottom: 0;
-  //   left: 0;
-  //   position: fixed;
-  //   right: 0;
-  //   top: 0;
-  //   z-index: 999; // This feels brittle, could create a system for app wide z-index.
-  // }
-}
-
 .rte-format-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -20,10 +9,6 @@
     border-bottom: $px1 solid $color-black-l85;
     display: flex;
     margin-bottom: 0.5rem;
-
-    // .full-screen & {
-    //   justify-content: center;
-    // }
   }
 
   &_category {
@@ -103,22 +88,6 @@
   height: 11rem;
   overflow-y: scroll;
   padding: 0.5rem 0.8rem;
-
-  // &.full-screen {
-  //   font-size: 1rem;
-  //   height: 100%;
-  //   padding-bottom: 5rem;
-  //   padding-top: 1rem;
-
-  //   // Target all children of the slate editor in order to center them
-  //   // and give them a max width of 592px, which is an "ideal words
-  //   // per line limit".
-  //   & > * {
-  //     margin-left: auto;
-  //     margin-right: auto;
-  //     width: 37rem;
-  //   }
-  // }
 }
 
 .rte-form-control {
@@ -127,10 +96,6 @@
   border: $px1 solid $color-cloudy;
   height: 15rem;
   width: 100%;
-
-  // &.full-screen {
-  //   height: 100%;
-  // }
 
   &.input-group {
     padding: 0;
