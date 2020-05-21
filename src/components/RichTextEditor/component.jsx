@@ -124,13 +124,13 @@ class LabelledRichTextEditor extends React.Component {
     const { editor } = this;
     const activeEl = document.activeElement;
 
-    const rteClass = classNames({
-      'is-focused': isFocused,
-      'full-screen': isFullScreen,
-    });
+    // const rteClass = classNames({
+    //   'is-focused': isFocused,
+    //   'full-screen': isFullScreen,
+    // });
 
     return (
-      <div className="form-group">
+      <div className={`form-group ${isFullScreen ? 'full-screen' : ''}`}>
         {modalIsOpen && (
           <EditorLinkModal
             closeModal={this.closeModal}
@@ -139,10 +139,13 @@ class LabelledRichTextEditor extends React.Component {
           />
         )}
 
-        <div className={`notes ${classNames({ 'full-screen': isFullScreen })}`} id={`wrapper_${id}`}>
+        <div
+          className="notes"
+          id={`wrapper_${id}`}
+        >
           <div
             ref={this.containerRef}
-            className={`rte-form-control ${rteClass}`}
+            className={`rte-form-control ${isFocused ? 'is-focused' : ''}`}
             id={`${id}_editor_container`}
             onFocus={this.onContainerFocus}
             onBlur={this.onContainerBlur}
