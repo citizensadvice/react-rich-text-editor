@@ -111,23 +111,6 @@
     border-color: $color-tomato;
   }
 
-  &.is-focused {
-    border: $px2 solid $color-squash;
-    box-shadow: none;
-
-    // These two are here because it's the parent that controls the focus state.
-    .rte-format-toolbar {
-      padding-bottom: 0.7rem;
-      padding-left: calc(0.5rem + -1px);
-      padding-right: calc(0.5rem + -1px);
-      padding-top: calc(0.7rem + -1px);
-    }
-
-    .rich-text-editor {
-      padding-left: calc(0.8rem + -1px);
-      padding-right: calc(0.8rem + -1px);
-    }
-  }
   &:disabled {
     &::placeholder {
       color: $color-black-l80;
@@ -211,7 +194,26 @@
   height: 100%;
 }
 
-.full-screen {
+.is-focused {
+  .rte-form-control {
+    border: $px2 solid $color-squash;
+    box-shadow: none;
+  }
+
+  .rte-format-toolbar {
+    padding-bottom: 0.7rem;
+    padding-left: calc(0.5rem + -1px);
+    padding-right: calc(0.5rem + -1px);
+    padding-top: calc(0.7rem + -1px);
+  }
+
+  .rich-text-editor {
+    padding-left: calc(0.8rem + -1px);
+    padding-right: calc(0.8rem + -1px);
+  }
+}
+
+.is-fullscreen {
   .notes {
     bottom: 0;
     left: 0;
