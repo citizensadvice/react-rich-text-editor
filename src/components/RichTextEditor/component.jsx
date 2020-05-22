@@ -19,13 +19,13 @@ const html = new Html({ rules });
 class LabelledRichTextEditor extends React.Component {
   constructor(props) {
     super(props);
-    const { edit, text, lockedForm } = this.props;
+    const { edit, text, readOnly } = this.props;
     this.containerRef = React.createRef();
     this.editor = React.createRef();
 
     this.state = {
       editorValue: edit ? Plain.deserialize(text) : Value.fromJSON(initialValue),
-      lockedForm,
+      readOnly,
       isFocused: false,
       isFullScreen: false,
       modalIsOpen: false,
@@ -87,8 +87,8 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   onClick = () => {
-    const { lockedForm } = this.state;
-    if (lockedForm) return;
+    const { readOnly } = this.state;
+    if (readOnly) return;
     this.setState({ isFocused: true });
   }
 
@@ -122,7 +122,7 @@ class LabelledRichTextEditor extends React.Component {
 
   render() {
     const { isInvalid, id, events, labelledby } = this.props;
-    const { editorValue, isFocused, isFullScreen, modalIsOpen, lockedForm } = this.state;
+    const { editorValue, isFocused, isFullScreen, modalIsOpen, readOnly } = this.state;
     const { editor } = this;
     const activeEl = document.activeElement;
 
@@ -141,7 +141,7 @@ class LabelledRichTextEditor extends React.Component {
           />
         )}
 
-        <div className="notes" id={`wrapper_${id}`}>
+        <div className="wrapper-editor" id={`wrapper_${id}`}>
           <div
             ref={this.containerRef}
             className={`rte-form-control ${rteClass}`}
@@ -156,7 +156,7 @@ class LabelledRichTextEditor extends React.Component {
               value={editorValue}
               ref={editor}
               passedState={this.state}
-              isLocked={lockedForm}
+              isLocked={readOnly}
               activeEl={activeEl}
               onStateChange={this.handlingStateFromChild}
             />
@@ -170,7 +170,7 @@ class LabelledRichTextEditor extends React.Component {
               aria-labelledby={labelledby}
               aria-describedby={`${id}_error`}
               aria-invalid={isInvalid}
-              readOnly={lockedForm}
+              readOnly={readOnly}
               ref={this.ref}
               value={editorValue}
               onChange={this.handleEditorChange}
@@ -193,7 +193,7 @@ LabelledRichTextEditor.propTypes = {
   id: PropTypes.string,
   text: PropTypes.string,
   labelledby: PropTypes.string,
-  lockedForm: PropTypes.bool,
+  readOnly: PropTypes.bool,
   onEditorChange: PropTypes.func,
   hideLabel: PropTypes.string,
   wrapperTag: PropTypes.string,
@@ -208,7 +208,7 @@ LabelledRichTextEditor.propTypes = {
 LabelledRichTextEditor.defaultProps = {
   id: 'editor',
   required: false,
-  lockedForm: false,
+  readOnly: false,
 };
 
 export default LabelledRichTextEditor;

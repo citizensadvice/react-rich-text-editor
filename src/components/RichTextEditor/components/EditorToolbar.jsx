@@ -96,12 +96,12 @@ const EditorToolbar = React.forwardRef((props, ref) => {
         .map((collection) => Array.from(collection));
       if (fieldArr) {
         let fields = [];
-        const notesArr = fieldArr[0];
+        const wrappersArr = fieldArr[0];
         const containersArr = fieldArr[1];
         const editorsArr = fieldArr[2];
 
         const containerEl = containersArr.find((el) => el.id.includes(activeEl.id));
-        const wrapperEl = notesArr.find((el) => el.id.includes(activeEl.id));
+        const wrapperEl = wrappersArr.find((el) => el.id.includes(activeEl.id));
         const editorEl = editorsArr.find((el) => el === activeEl);
 
         fields = fields
