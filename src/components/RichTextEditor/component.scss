@@ -3,12 +3,11 @@
 .rte-format-toolbar {
   display: flex;
   flex-wrap: wrap;
-  padding: 0.7rem 0.5rem;
+  padding: 0.8rem;
 
   &_container {
     border-bottom: $px1 solid $color-black-l85;
     display: flex;
-    margin-bottom: 0.5rem;
   }
 
   &_category {
@@ -84,16 +83,12 @@
   }
 }
 
-.rich-text-editor {
-  height: 11rem;
-  overflow-y: scroll;
-  padding: 0.5rem 0.8rem;
-}
-
 .rte-form-control {
   background: $color-white;
   border-radius: 0;
   border: $px1 solid $color-cloudy;
+  display: flex;
+  flex-direction: column;
   height: 15rem;
   width: 100%;
 
@@ -131,6 +126,12 @@
   &[readonly]::placeholder {
     color: $color-white;
   }
+}
+
+.rich-text-editor {
+  overflow-y: scroll;
+  padding: 0.8rem;
+  flex: 1;
 }
 
 .rte {
@@ -201,10 +202,10 @@
   }
 
   .rte-format-toolbar {
-    padding-bottom: 0.7rem;
-    padding-left: calc(0.5rem + -1px);
-    padding-right: calc(0.5rem + -1px);
-    padding-top: calc(0.7rem + -1px);
+    padding-bottom: 0.8rem;
+    padding-left: calc(0.8rem + -1px);
+    padding-right: calc(0.8rem + -1px);
+    padding-top: calc(0.8rem + -1px);
   }
 
   .rich-text-editor {
