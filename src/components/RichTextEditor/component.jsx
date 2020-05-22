@@ -146,7 +146,6 @@ class LabelledRichTextEditor extends React.Component {
           <div
             ref={this.containerRef}
             className="rte-form-control"
-            // className={`rte-form-control ${isFocused ? 'is-focused' : ''}`}
             id={`${id}_editor_container`}
             onFocus={this.onContainerFocus}
             onBlur={this.onContainerBlur}
