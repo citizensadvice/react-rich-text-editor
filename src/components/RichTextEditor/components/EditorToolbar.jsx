@@ -244,8 +244,15 @@ const EditorToolbar = React.forwardRef((props, ref) => {
             actionKeys={[]}
           >
             <EditorToolbarInfobox>
-              Please press <span className="rte-format-toolbar_category-key">ctrl+V</span>
-              {' '} or <span className="rte-format-toolbar_category-key">⌘+V</span> to paste.
+              Please press
+              {' '}
+              <span className="rte-format-toolbar_category-key">ctrl+V</span>
+              {' '}
+              {' '}
+              or
+              <span className="rte-format-toolbar_category-key">⌘+V</span>
+              {' '}
+              to paste.
               Your browser does not support pasting with the toolbar button or context menu option.
             </EditorToolbarInfobox>
           </OutsideAlerter>

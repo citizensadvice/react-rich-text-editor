@@ -6,6 +6,8 @@
     "browser": true
   },
   "rules": {
+    "func-names": 0,
+    "babel/no-unused-expressions": "error",
     "import/extensions": ["error", "never", { "json": "always" }],
     "import/prefer-default-export": "off",
     "import/no-default-export": "off",
@@ -34,10 +36,32 @@
     "jsx-a11y/label-has-for": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/no-noninteractive-element-to-interactive-role": "off",
+    "jsx-a11y/no-noninteractive-tabindex": 0,
     "jsx-a11y/no-static-element-interactions": "off",
     "jsx-a11y/role-has-required-aria-props": "off",
+    "no-underscore-dangle": "off",
     "no-unused-expressions": "off",
-    "babel/no-unused-expressions": "error"
+    "no-return-assign": 0,
+    "no-multi-assign": 0,
+    "no-mixed-operators": 0,
+    "no-plusplus": 0,
+    "no-var": "off",
+    "no-restricted-syntax": 0,
+    "camelcase": "off",
+    "class-methods-use-this": 0,
+    "max-len": [
+      2,
+      140,
+      2,
+      {
+        "ignoreUrls": true,
+        "ignoreComments": false,
+        "ignoreStrings": true
+      }
+    ],
+    "prefer-destructuring": "off",
+    "react/destructuring-assignment": "off",
+    "vars-on-top": 0
   },
   "overrides": [
     {

@@ -21,8 +21,8 @@
     "eject": "react-scripts eject",
     "lint:js": "eslint . --ext .js --ext .jsx",
     "lint:styles": "stylelint \"**/*.scss\"",
-    "build:styles": "node-sass src/components/RichTextEditor/component.scss src/components/RichTextEditor/component.css --output-style compressed",
-    "prepare": "npm run build:styles && rm -rf dist && mkdir dist && babel src/components/RichTextEditor -d dist --copy-files",
+    "build:styles": "npm run lint:styles && node-sass src/components/RichTextEditor/component.scss src/components/RichTextEditor/component.css --output-style compressed",
+    "prepare": "npm run build:styles && npm run lint:js && rm -rf dist && mkdir dist && babel src/components/RichTextEditor -d dist --copy-files",
     "release:preview": "npm run prepare && np --preview",
     "release": "npm run prepare && np"
   },
@@ -38,6 +38,7 @@
     "classnames": "^2.2.6",
     "is-hotkey": "^0.1.4",
     "lodash-es": "^4.17.15",
+    "react-dom": "^16.13.1",
     "slate": "^0.47.8",
     "slate-editor": "^5.1.1",
     "slate-html-serializer": "^0.8.11",

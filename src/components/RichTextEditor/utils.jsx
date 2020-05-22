@@ -79,7 +79,6 @@ export const rules = [
   {
     deserialize(el, next) {
       const type = BLOCK_TAGS[el.tagName.toLowerCase()];
-
       if (type) {
         return {
           object: 'block',
@@ -111,7 +110,7 @@ export const rules = [
           case 'paragraphRight':
             return <div className="rte-paragraph-right">{children}</div>;
           case 'link':
-            return <a href="">{children}</a>;
+            return <a href={children}>{children}</a>;
           case 'div':
             return <div>{children}</div>;
           case 'span':

@@ -1,6 +1,6 @@
 import React from 'react';
-import RichTextEditor from './RichTextEditor';
-import './index.scss';
+import RichTextEditor from './components/RichTextEditor';
+import './components/App/component.scss';
 
 export function App() {
   return (
