@@ -43,7 +43,8 @@
     "slate-html-serializer": "^0.8.11",
     "slate-hyperscript": "^0.57.1",
     "slate-plain-serializer": "^0.7.11",
-    "slate-react": "^0.22.4"
+    "slate-react": "^0.22.4",
+    "tinymce-word-paste-filter": "^0.7.3"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.9.4",
