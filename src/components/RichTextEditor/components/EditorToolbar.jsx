@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { startCase } from 'lodash-es';
 
-import { DEFAULT_NODE, FORM_GROUP_COLLECTION, RTE_FORM_CTRL_COLLECTION, RTE_COLLECTION } from '../constants';
+import { DEFAULT_NODE } from '../constants';
 import { hasBlock, hasMark } from '../utils';
 import { unwrapLink, hasLinks } from '../link';
 
@@ -24,7 +24,7 @@ const EditorToolbar = React.forwardRef((props, ref) => {
 
   function onClickMark(event, type, editor) {
     event.preventDefault();
-    if (!editor) return;
+    if (editorRef.current === null) return;
     editor.toggleMark(type);
   }
 
@@ -59,23 +59,14 @@ const EditorToolbar = React.forwardRef((props, ref) => {
     );
   }
 
-  function activateFullScreen(field) {
-    document.body.classList.add('overflow-hidden');
-    field.classList.add('full-screen');
-    onStateChange({ isFullScreen: true });
-  }
-
-  function deactivateFullScreen(field) {
-    document.body.classList.remove('overflow-hidden');
-    field.classList.remove('full-screen');
-    onStateChange({ isFullScreen: false });
+  function toggleFullscreen() {
+    const { isFullScreen } = passedState;
+    onStateChange({ isFullScreen: !isFullScreen });
   }
 
   function onClickBlock(event, type, editor) {
     if (event) event.preventDefault();
     const { document } = value;
-    const { isFullScreen } = passedState;
-    const { activeEl } = props;
 
     if (type === 'paste') {
       setIsPasteInfoActive(!isPasteInfoActive);
@@ -92,32 +83,7 @@ const EditorToolbar = React.forwardRef((props, ref) => {
     }
 
     if (type === 'maximise') {
-      const fieldArr = [FORM_GROUP_COLLECTION, RTE_FORM_CTRL_COLLECTION, RTE_COLLECTION]
-        .map((collection) => Array.from(collection));
-      if (fieldArr) {
-        let fields = [];
-        const wrappersArr = fieldArr[0];
-        const containersArr = fieldArr[1];
-        const editorsArr = fieldArr[2];
-
-        const containerEl = containersArr.find((el) => el.id.includes(activeEl.id));
-        const wrapperEl = wrappersArr.find((el) => el.id.includes(activeEl.id));
-        const editorEl = editorsArr.find((el) => el === activeEl);
-
-        fields = fields
-          .concat(containerEl)
-          .concat(wrapperEl)
-          .concat(editorEl);
-
-        if (fields) {
-          fields.forEach((field) => {
-            activateFullScreen(field);
-            if (isFullScreen) {
-              deactivateFullScreen(field);
-            }
-          });
-        }
-      }
+      toggleFullscreen();
       return;
     }
 
@@ -152,7 +118,7 @@ const EditorToolbar = React.forwardRef((props, ref) => {
           )
           .wrapBlock(type);
       } else {
-        if (!editor) return;
+        if (editorRef.current === null) return;
         editor.setBlocks('list-item').wrapBlock(type);
       }
     }
@@ -190,6 +156,12 @@ const EditorToolbar = React.forwardRef((props, ref) => {
       event.preventDefault();
       onButtonMouseDown(event, type);
     }
+  }
+
+  function onToolbarContainerClick(e) {
+    e.stopPropagation();
+    if (editorRef.current === null) return;
+    editorRef.focus();
   }
 
   function disableIcon(type, editorValue) {
@@ -244,20 +216,20 @@ const EditorToolbar = React.forwardRef((props, ref) => {
             actionKeys={[]}
           >
             <EditorToolbarInfobox>
-              Please press <span className="rte-format-toolbar_category-key">ctrl+V</span>
-              {' '} or <span className="rte-format-toolbar_category-key">⌘+V</span> to paste.
-              Your browser does not support pasting with the toolbar button or context menu option.
+              Please press
+              {' '}
+              <span className="rte-format-toolbar_category-key">ctrl+V</span>
+              {' '}
+              or
+              {' '}
+              <span className="rte-format-toolbar_category-key">⌘+V</span>
+              {' '}
+              to paste. Your browser does not support pasting with the toolbar button or context menu option.
             </EditorToolbarInfobox>
           </OutsideAlerter>
         )}
       </div>
     );
-  }
-
-  function onToolbarContainerClick(e) {
-    e.stopPropagation();
-    if (!editorRef) return;
-    editorRef.focus();
   }
 
   return (
