@@ -26,7 +26,6 @@ class LabelledRichTextEditor extends React.Component {
     this.state = {
       editorValue: edit ? Plain.deserialize(text) : Value.fromJSON(initialValue),
       lockedForm,
-      isFocused: false,
       isFullScreen: false,
       modalIsOpen: false,
       isKeyShiftTab: false,
@@ -41,7 +40,7 @@ class LabelledRichTextEditor extends React.Component {
     this.setState(newState);
   }
 
-  closeModal = () => {
+  handleCloseModal = () => {
     this.setState({ modalIsOpen: false });
   }
 
@@ -57,10 +56,6 @@ class LabelledRichTextEditor extends React.Component {
       { editorValue: value },
       () => this.onEditorChange(html.serialize(editorValue)),
     );
-  }
-
-  setClassOfContainer = (className) => {
-    this.containerRef.current.classList = [className];
   }
 
   onEditorKeyDown = (event, editor, next) => { // eslint-disable-line consistent-return
@@ -84,26 +79,9 @@ class LabelledRichTextEditor extends React.Component {
     editor.toggleMark(mark);
   }
 
-  onClick = () => {
-    const { lockedForm } = this.state;
-    if (lockedForm) return;
-    this.setState({ isFocused: true });
-  }
-
-  onContainerFocus = (e) => {
+  handleContainerBlur = () => {
     const { isFullScreen } = this.state;
-    if (this.containerRef.current.contains(e.target) && !isFullScreen) {
-      this.setClassOfContainer('rte-form-control is-focused');
-    }
-  }
-
-  onContainerBlur = () => {
-    const { isFullScreen } = this.state;
-
-    if (!isFullScreen) {
-      this.editor.blur();
-      setTimeout(() => this.setState({ isFocused: false }), 0);
-    }
+    if (!isFullScreen) this.editor.blur();
   }
 
   onEditorBlur = (e, editor, next) => {
@@ -120,12 +98,11 @@ class LabelledRichTextEditor extends React.Component {
 
   render() {
     const { isInvalid, id, events, labelledby } = this.props;
-    const { editorValue, isFocused, isFullScreen, modalIsOpen, lockedForm } = this.state;
+    const { editorValue, isFullScreen, modalIsOpen, lockedForm } = this.state;
     const { editor } = this;
     const activeEl = document.activeElement;
 
     const stateClasses = classNames({
-      'is-focused': isFocused,
       'is-fullscreen': isFullScreen,
     });
 
@@ -133,7 +110,7 @@ class LabelledRichTextEditor extends React.Component {
       <div className={`form-group ${stateClasses}`}>
         {modalIsOpen && (
           <EditorLinkModal
-            closeModal={this.closeModal}
+            closeModal={this.handleCloseModal}
             hasText={editor.value.selection.isExpanded}
             editor={editor}
           />
@@ -145,11 +122,9 @@ class LabelledRichTextEditor extends React.Component {
         >
           <div
             ref={this.containerRef}
-            className="rte-form-control"
             id={`${id}_editor_container`}
-            onFocus={this.onContainerFocus}
-            onBlur={this.onContainerBlur}
-            onClick={this.onClick}
+            className="rte-form-control"
+            onBlur={this.handleContainerBlur}
           >
             {!!events && events}
 

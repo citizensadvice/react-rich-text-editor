@@ -92,6 +92,10 @@
   height: 15rem;
   width: 100%;
 
+  &:focus-within {
+    border: $px2 solid $color-squash;
+  }
+
   &.input-group {
     padding: 0;
     z-index: initial;
@@ -193,25 +197,6 @@
 .icon-svg {
   width: 100%;
   height: 100%;
-}
-
-.is-focused {
-  .rte-form-control {
-    border: $px2 solid $color-squash;
-    box-shadow: none;
-  }
-
-  .rte-format-toolbar {
-    padding-bottom: 0.8rem;
-    padding-left: calc(0.8rem + -1px);
-    padding-right: calc(0.8rem + -1px);
-    padding-top: calc(0.8rem + -1px);
-  }
-
-  .rich-text-editor {
-    padding-left: calc(0.8rem + -1px);
-    padding-right: calc(0.8rem + -1px);
-  }
 }
 
 .is-fullscreen {
