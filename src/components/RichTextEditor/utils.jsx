@@ -14,7 +14,6 @@ const onClick = (e, href) => {
 
 export const renderBlock = (props, editor, next) => {
   const { attributes, children, node } = props;
-
   switch (node.type) {
     case 'paragraph':
       return <p {...attributes}>{children}</p>;
@@ -124,19 +123,19 @@ export const rules = [
   {
     deserialize(el, next) {
       const type = BLOCK_TAGS[el.tagName.toLowerCase()];
-      if (type) {
+      if (!type || type === 'span') {
         return {
-          object: 'block',
-          type,
-          data: {
-            className: el.getAttribute('class'),
-            href: el.getAttribute('href'),
-          },
-          nodes: next(el.childNodes),
+          object: 'text',
+          leaves: [el.textContent],
         };
       } return {
-        object: 'text',
-        leaves: [el.textContent],
+        object: 'block',
+        type,
+        data: {
+          className: el.getAttribute('class'),
+          href: el.getAttribute('href'),
+        },
+        nodes: next(el.childNodes),
       };
     },
     serialize(obj, children) {

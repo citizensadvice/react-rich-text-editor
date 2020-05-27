@@ -23,11 +23,13 @@ export function unwrapLink(editor) {
 export const hasLinks = (value) => value.inlines.some((inline) => inline.type === 'link');
 
 /* eslint-disable consistent-return */
-export const onLinkPaste = async (event, editor, next) => {
+export const onPaste = async (event, editor, next) => {
   const textIsLink = hasLinks(editor.value);
   const transfer = getEventTransfer(event);
   const { type, text } = transfer;
+
   if (type !== 'html') return next();
+
   if (type === 'html') {
     const html = new Html({ rules, type: 'paragraph' });
 
@@ -35,6 +37,8 @@ export const onLinkPaste = async (event, editor, next) => {
     // it adds unnecessary markup and makes it impossible for slate to deserialize it
     const cleanedHtml = wordFilter(transfer.html);
     const { document } = html.deserialize(cleanedHtml);
+
+    console.log(document.toJS());
 
     await event.preventDefault();
     editor.insertFragment(document);

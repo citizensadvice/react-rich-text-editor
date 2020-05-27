@@ -7,7 +7,7 @@ import Plain from 'slate-plain-serializer';
 import Html from 'slate-html-serializer';
 
 import { IS_BOLD_HOTKEY, IS_ITALIC_HOTKEY, IS_UNDERLINED_HOTKEY } from './constants';
-import { onLinkPaste, renderInline } from './link';
+import { onPaste, renderInline } from './link';
 import { renderMark, renderBlock, rules } from './utils';
 import initialValue from './value.json';
 
@@ -176,7 +176,7 @@ class LabelledRichTextEditor extends React.Component {
               onChange={this.handleEditorChange}
               onKeyDown={this.onEditorKeyDown}
               onBlur={this.onEditorBlur}
-              onPaste={onLinkPaste}
+              onPaste={onPaste}
               renderBlock={renderBlock}
               renderMark={renderMark}
               renderInline={renderInline}
