@@ -42,7 +42,7 @@ export const renderInline = (props, editor, next) => {
 
   // remove the ref that's passed in from editor as function components cannot be given refs
   // without using React.forwardRef().
-  const { ref, ...remainingAttributes } = attributes;
+  const { ...remainingAttributes } = attributes;
 
   switch (node.type) {
     case 'link': {

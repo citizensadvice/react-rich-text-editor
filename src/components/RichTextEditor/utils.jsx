@@ -79,7 +79,6 @@ export const rules = [
   {
     deserialize(el, next) {
       const type = BLOCK_TAGS[el.tagName.toLowerCase()];
-
       if (type) {
         return {
           object: 'block',
@@ -94,7 +93,13 @@ export const rules = [
       return null;
     },
     serialize(obj, children) {
-      if (obj.object === 'block') {
+      // console.log(obj.toJS());
+      if (
+        obj.object === 'block'
+        || obj.object === 'inline'
+        || obj.object === 'text'
+        || obj.object === 'string'
+      ) {
         switch (obj.type) {
           case 'bulletList':
             return <ul>{children}</ul>;
@@ -111,7 +116,7 @@ export const rules = [
           case 'paragraphRight':
             return <div className="rte-paragraph-right">{children}</div>;
           case 'link':
-            return <a href="">{children}</a>;
+            return <a href={obj.data.href}>{children}</a>;
           case 'div':
             return <div>{children}</div>;
           case 'span':

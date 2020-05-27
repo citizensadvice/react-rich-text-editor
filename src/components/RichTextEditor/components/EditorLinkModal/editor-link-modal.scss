@@ -6,7 +6,7 @@
   background: none;
   height: auto;
   
-  &[aria-invalid=true] {
+  &[aria-invalid="true"] {
     border-color: $color-tomato;
   }
 }
