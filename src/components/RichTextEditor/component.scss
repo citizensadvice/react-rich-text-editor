@@ -1,0 +1,226 @@
+@import "../../globals/variables.scss";
+
+.rte-format-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.8rem;
+
+  &_container {
+    border-bottom: $px1 solid $color-black-l85;
+    display: flex;
+  }
+
+  &_category {
+    align-items: center;
+    border-right: $px1 solid $color-black-l70;
+    display: flex;
+    justify-content: center;
+    max-height: 1rem;
+    position: relative;
+
+    &:last-child {
+      border-right: 0;
+    }
+
+    &-info {
+      background-color: $color-white;
+      border: $px1 solid $color-black-l70;
+      left: 50%;
+      padding: 1rem;
+      position: absolute;
+      right: 10rem;
+      top: 1.75rem;
+      transform: translateX(-50%);
+      width: 20rem;
+      z-index: 999;
+    }
+
+    &-key {
+      background-color: $color-black-l60;
+      border: $px1 solid $color-black-l70;
+      color: $color-white;
+      padding: 0 0.5em;
+    }
+  }
+
+  &_button {
+    border: none;
+    color: $color-black-l20;
+    display: flex !important;
+    margin: 0 0.2rem;
+    width: 1.7rem;
+    height: 1.7rem;
+    cursor: pointer;
+
+    &:hover {
+      border: $px1 solid $color-black-l70;
+    }
+
+    &:focus {
+      background: transparent;
+      border: $px1 solid $color-black-l70;
+    }
+
+    &.active {
+      border: $px1 solid $color-black-l70;
+    }
+
+    &.disabled {
+      filter: invert(70%) sepia(0%) saturate(1704%) hue-rotate(136deg)
+        brightness(91%) contrast(96%);
+      cursor: not-allowed !important;
+
+      &:hover,
+      &:focus {
+        background-color: unset;
+        border: unset;
+        cursor: not-allowed !important;
+      }
+    }
+    &.readonly {
+      pointer-events: none;
+    }
+  }
+}
+
+.rte-form-control {
+  background: $color-white;
+  border-radius: 0;
+  border: $px1 solid $color-cloudy;
+  display: flex;
+  flex-direction: column;
+  height: 15rem;
+  width: 100%;
+
+  &:focus-within {
+    border: $px2 solid $color-squash;
+  }
+
+  &.input-group {
+    padding: 0;
+    z-index: initial;
+  }
+
+  &.has-info {
+    border-color: $color-lavender;
+  }
+
+  // All invalid inputs will have this attribute
+  &.is-invalid {
+    border-color: $color-tomato;
+  }
+
+  &:disabled {
+    &::placeholder {
+      color: $color-black-l80;
+    }
+  }
+
+  &:disabled,
+  &[readonly] {
+    background-color: $color-black-l95;
+    border-color: $color-black-l80;
+    cursor: not-allowed;
+
+    &:focus {
+      border-color: $color-squash;
+    }
+  }
+
+  &[readonly]::placeholder {
+    color: $color-white;
+  }
+}
+
+.rich-text-editor {
+  overflow-y: scroll;
+  padding: 0.8rem;
+  flex: 1;
+}
+
+.rte {
+  &-indent-increase {
+    text-indent: 2em;
+  }
+  &-paragraph {
+    &-left {
+      text-align: left;
+    }
+    &-center {
+      text-align: center;
+    }
+    &-right {
+      text-align: right;
+    }
+  }
+  &-link-modal {
+    .modal-content {
+      .modal-body {
+        display: flex;
+        flex-direction: column;
+
+        .btn-success {
+          align-self: flex-end;
+          justify-self: end;
+          color: $color-white;
+        }
+      }
+    }
+
+    &-main {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  &-link-new-window {
+    &:hover {
+      cursor: pointer;
+    }
+    &-no-text {
+      &::after {
+        // This is to overwrite page-defaults style -
+        // remove pseudo-element (icon) when the link has no text
+        display: none !important;
+      }
+    }
+  }
+  &_hidden_textarea {
+    height: 0;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    width: 0;
+    z-index: -1;
+  }
+}
+
+.icon-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.is-fullscreen {
+  .wrapper-editor {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 999;
+  }
+
+  & .rte-format-toolbar {
+    justify-content: center;
+  }
+
+  & .rte-form-control {
+    height: 100%;
+  }
+
+  & .rte-format-toolbar,
+  & .rich-text-editor > * {
+    margin-left: auto;
+    margin-right: auto;
+    width: 37rem;
+  }
+}

@@ -1,0 +1,22 @@
+@import '../../globals/variables.scss';
+
+a[rel~="external"] {
+  color: $link-color;
+  text-decoration: $link-decoration;
+
+  &:hover {
+    color: $link-hover-color;
+  }
+
+// https://fontawesome.com/license/free
+  &::after {
+    content: "\f14c";
+    display: inline-block;
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    text-decoration: none;
+    padding-left: .4em;
+    font-size: $font-size-base;
+  }
+}

@@ -3,6 +3,9 @@
   "version": "1.0.1",
   "description": "Slate based rich text editor",
   "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "babel": {
     "presets": [
       "@babel/preset-react"
@@ -14,12 +17,14 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build:sass": "node-sass source/index.scss --include-path node_modules -o dist --output-style compressed",
-    "publish": "rm -rf dist && mkdir dist && babel source -d dist --copy-files && npm run build:sass",
-    "lint:js": "eslint . --ext .js --ext .jsx",
-    "lint:scss": "stylelint \"**/*.scss\"",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint:js": "eslint . --ext .js --ext .jsx",
+    "lint:styles": "stylelint \"**/*.scss\"",
+    "build:styles": "npm run lint:styles && node-sass src/components/RichTextEditor/component.scss src/components/RichTextEditor/component.css --output-style compressed",
+    "prepare": "npm run build:styles && npm run lint:js && rm -rf dist && mkdir dist && babel src/components/RichTextEditor -d dist --copy-files",
+    "release:preview": "npm run prepare && np --preview",
+    "release": "npm run prepare && np"
   },
   "dependencies": {
     "@babel/cli": "^7.8.4",
@@ -33,12 +38,14 @@
     "classnames": "^2.2.6",
     "is-hotkey": "^0.1.4",
     "lodash-es": "^4.17.15",
+    "react-dom": "^16.13.1",
     "slate": "^0.47.8",
     "slate-editor": "^5.1.1",
     "slate-html-serializer": "^0.8.11",
     "slate-hyperscript": "^0.57.1",
     "slate-plain-serializer": "^0.7.11",
-    "slate-react": "^0.22.4"
+    "slate-react": "^0.22.4",
+    "tinymce-word-paste-filter": "^0.7.3"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.9.4",
@@ -56,12 +63,14 @@
     "eslint-plugin-react-hooks": "^3.0.0",
     "gh-pages": "^2.2.0",
     "node-sass": "^4.13.1",
+    "np": "^6.2.3",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
     "sass": "^1.26.3",
     "stylelint": "^13.3.2",
+    "stylelint-config-prettier": "^8.0.1",
     "stylelint-config-standard": "^20.0.0",
     "stylelint-config-standard-scss": "^1.1.0",
     "stylelint-scss": "^3.17.0"
