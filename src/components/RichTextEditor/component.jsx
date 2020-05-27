@@ -19,14 +19,13 @@ const html = new Html({ rules });
 class LabelledRichTextEditor extends React.Component {
   constructor(props) {
     super(props);
-    const { edit, text, lockedForm } = this.props;
+    const { edit, text, readOnly } = this.props;
     this.containerRef = React.createRef();
     this.editor = React.createRef();
 
     this.state = {
       editorValue: edit ? Plain.deserialize(text) : Value.fromJSON(initialValue),
-      lockedForm,
-      isFocused: false,
+      readOnly,
       isFullScreen: false,
       modalIsOpen: false,
       isKeyShiftTab: false,
@@ -41,7 +40,7 @@ class LabelledRichTextEditor extends React.Component {
     this.setState(newState);
   }
 
-  closeModal = () => {
+  handleCloseModal = () => {
     this.setState({ modalIsOpen: false });
   }
 
@@ -57,12 +56,6 @@ class LabelledRichTextEditor extends React.Component {
       { editorValue: value },
       () => this.onEditorChange(html.serialize(editorValue)),
     );
-  }
-
-  setClassOfContainer = (className) => {
-    const { id } = this.props;
-    const container = document.getElementById(`${id}_editor_container`);
-    container.classList = [className];
   }
 
   onEditorKeyDown = (event, editor, next) => { // eslint-disable-line consistent-return
@@ -86,26 +79,9 @@ class LabelledRichTextEditor extends React.Component {
     editor.toggleMark(mark);
   }
 
-  onClick = () => {
-    const { lockedForm } = this.state;
-    if (lockedForm) return;
-    this.setState({ isFocused: true });
-  }
-
-  onContainerFocus = (e) => {
+  handleContainerBlur = () => {
     const { isFullScreen } = this.state;
-    if (this.containerRef.current.contains(e.target) && !isFullScreen) {
-      this.setClassOfContainer('rte-form-control is-focused');
-    }
-  }
-
-  onContainerBlur = () => {
-    const { isFullScreen } = this.state;
-
-    if (!isFullScreen) {
-      this.editor.blur();
-      setTimeout(() => this.setState({ isFocused: false }), 0);
-    }
+    if (!isFullScreen) this.editor.blur();
   }
 
   onEditorBlur = (e, editor, next) => {
@@ -122,33 +98,30 @@ class LabelledRichTextEditor extends React.Component {
 
   render() {
     const { isInvalid, id, events, labelledby } = this.props;
-    const { editorValue, isFocused, isFullScreen, modalIsOpen, lockedForm } = this.state;
+    const { editorValue, isFullScreen, modalIsOpen, readOnly } = this.state;
     const { editor } = this;
     const activeEl = document.activeElement;
 
-    const rteClass = classNames({
-      'is-focused': isFocused,
-      'full-screen': isFullScreen,
+    const stateClasses = classNames({
+      'is-fullscreen': isFullScreen,
     });
 
     return (
-      <div className="form-group">
+      <div className={`form-group ${stateClasses}`}>
         {modalIsOpen && (
           <EditorLinkModal
-            closeModal={this.closeModal}
+            closeModal={this.handleCloseModal}
             hasText={editor.value.selection.isExpanded}
             editor={editor}
           />
         )}
 
-        <div className="notes" id={`wrapper_${id}`}>
+        <div className="wrapper-editor" id={`wrapper_${id}`}>
           <div
             ref={this.containerRef}
-            className={`rte-form-control ${rteClass}`}
             id={`${id}_editor_container`}
-            onFocus={this.onContainerFocus}
-            onBlur={this.onContainerBlur}
-            onClick={this.onClick}
+            className="rte-form-control"
+            onBlur={this.handleContainerBlur}
           >
             {!!events && events}
 
@@ -156,7 +129,7 @@ class LabelledRichTextEditor extends React.Component {
               value={editorValue}
               ref={editor}
               passedState={this.state}
-              isLocked={lockedForm}
+              isLocked={readOnly}
               activeEl={activeEl}
               onStateChange={this.handlingStateFromChild}
             />
@@ -170,7 +143,7 @@ class LabelledRichTextEditor extends React.Component {
               aria-labelledby={labelledby}
               aria-describedby={`${id}_error`}
               aria-invalid={isInvalid}
-              readOnly={lockedForm}
+              readOnly={readOnly}
               ref={this.ref}
               value={editorValue}
               onChange={this.handleEditorChange}
@@ -193,7 +166,7 @@ LabelledRichTextEditor.propTypes = {
   id: PropTypes.string,
   text: PropTypes.string,
   labelledby: PropTypes.string,
-  lockedForm: PropTypes.bool,
+  readOnly: PropTypes.bool,
   onEditorChange: PropTypes.func,
   hideLabel: PropTypes.string,
   wrapperTag: PropTypes.string,
@@ -208,7 +181,7 @@ LabelledRichTextEditor.propTypes = {
 LabelledRichTextEditor.defaultProps = {
   id: 'editor',
   required: false,
-  lockedForm: false,
+  readOnly: false,
 };
 
 export default LabelledRichTextEditor;

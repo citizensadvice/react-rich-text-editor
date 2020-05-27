@@ -1,6 +1,6 @@
 @import '../../globals/variables.scss';
 
-a[rel~=external] {
+a[rel~="external"] {
   color: $link-color;
   text-decoration: $link-decoration;
 
