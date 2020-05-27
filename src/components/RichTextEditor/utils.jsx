@@ -17,8 +17,14 @@ export const renderBlock = (props, editor, next) => {
   switch (node.type) {
     case 'paragraph':
       return <p {...attributes}>{children}</p>;
-    case 'b':
-      return <strong {...attributes}>{children}</strong>;
+    case 'span':
+      return <span className="paragraph-inline" {...attributes}>{children}</span>;
+    case 'bold':
+      return <b {...attributes}>{children}</b>;
+    case 'italic':
+      return <i {...attributes}>{children}</i>;
+    case 'underlined':
+      return <u {...attributes}>{children}</u>;
     case 'bulletList':
       return <ul {...attributes}>{children}</ul>;
     case 'numberedList':
@@ -73,9 +79,9 @@ export const renderMark = (props, editor, next) => {
 
   switch (mark.type) {
     case 'bold':
-      return <strong {...attributes}>{children}</strong>;
+      return <b {...attributes}>{children}</b>;
     case 'italic':
-      return <em {...attributes}>{children}</em>;
+      return <i {...attributes}>{children}</i>;
     case 'underlined':
       return <u {...attributes}>{children}</u>;
     default:
@@ -109,12 +115,15 @@ const BLOCK_TAGS = {
   h4: 'heading-4',
   h5: 'heading-5',
   h6: 'heading-6',
+  b: 'bold',
+  i: 'italic',
+  u: 'underlined',
 };
 
 // Add a dictionary of mark tags.
 const MARK_TAGS = {
-  em: 'italic',
-  strong: 'bold',
+  b: 'bold',
+  i: 'italic',
   u: 'underlined',
 };
 
@@ -123,7 +132,7 @@ export const rules = [
   {
     deserialize(el, next) {
       const type = BLOCK_TAGS[el.tagName.toLowerCase()];
-      if (!type || type === 'span') {
+      if (!type) {
         return {
           object: 'text',
           leaves: [el.textContent],
@@ -139,7 +148,7 @@ export const rules = [
       };
     },
     serialize(obj, children) {
-      if (obj.object === 'block' || obj.object === 'text' || obj.object === 'inline') {
+      if (obj.object === 'block' || obj.object === 'text') {
         switch (obj.type) {
           case 'bulletList':
             return <ul>{children}</ul>;
@@ -193,7 +202,7 @@ export const rules = [
           case 'underlined':
             return <u>{children}</u>;
           default:
-            return <p>{children}</p>;
+            return <span>{children}</span>;
         }
       }
       return null;

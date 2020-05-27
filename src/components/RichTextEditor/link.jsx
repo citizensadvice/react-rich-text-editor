@@ -38,8 +38,6 @@ export const onPaste = async (event, editor, next) => {
     const cleanedHtml = wordFilter(transfer.html);
     const { document } = html.deserialize(cleanedHtml);
 
-    console.log(document.toJS());
-
     await event.preventDefault();
     editor.insertFragment(document);
   }
