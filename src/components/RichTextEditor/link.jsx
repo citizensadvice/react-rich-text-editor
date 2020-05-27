@@ -1,5 +1,9 @@
 import React from 'react';
 import { getEventTransfer } from 'slate-react';
+import wordFilter from 'tinymce-word-paste-filter';
+
+import Html from 'slate-html-serializer';
+import { rules } from './utils';
 import LinkNewWindow from './components/LinkNewWindow';
 
 
@@ -19,20 +23,31 @@ export function unwrapLink(editor) {
 export const hasLinks = (value) => value.inlines.some((inline) => inline.type === 'link');
 
 /* eslint-disable consistent-return */
-export const onLinkPaste = (event, editor, next) => {
-  if (editor.value.selection.isCollapsed) return next();
+export const onPaste = async (event, editor, next) => {
   const textIsLink = hasLinks(editor.value);
-
   const transfer = getEventTransfer(event);
   const { type, text } = transfer;
-  if (type !== 'text' && type !== 'html') return next();
+
+  if (type !== 'html') return next();
+
+  if (type === 'html') {
+    const html = new Html({ rules, type: 'paragraph' });
+
+    // clean html from microsoft word format
+    // it adds unnecessary markup and makes it impossible for slate to deserialize it
+    const cleanedHtml = wordFilter(transfer.html);
+    const { document } = html.deserialize(cleanedHtml);
+
+    await event.preventDefault();
+    editor.insertFragment(document);
+  }
 
   if (textIsLink) {
     editor.command(unwrapLink);
-  } else editor.command(wrapLink, text);
+  } else if (!textIsLink) editor.command(wrapLink, text);
 };
 
-const onClick = (e, href) => {
+export const onClick = (e, href) => {
   e.preventDefault();
   window.open(href);
 };
