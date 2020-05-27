@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { wrapLink } from '../../link';
 import Modal from '../Modal/Modal';
-import './editor-link-modal.scss';
 
 function EditorLinkModal(props) {
   const ref = useRef();
@@ -109,9 +108,9 @@ function EditorLinkModal(props) {
                 aria-invalid={invalidText}
               />
               {invalidText && (
-              <span id="rte-link-text_error" className="form-control-invalid">
-                Please complete this field
-              </span>
+                <span id="rte-link-text_error" className="form-control-invalid">
+                  Please complete this field
+                </span>
               )}
             </div>
           )}
