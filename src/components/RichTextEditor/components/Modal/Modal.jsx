@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import modalContainer from './modal_container';
 import Dialog from '../Dialog';
-import './modal.scss';
 
 class Modal extends React.Component {
   UNSAFE_componentWillMount() {
