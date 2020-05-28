@@ -1,4 +1,5 @@
-@import '../../globals/variables.scss';
+@import "../../globals/variables.scss";
+@import "../RichTextEditor/styles/index.scss";
 
 a[rel~="external"] {
   color: $link-color;
@@ -8,7 +9,7 @@ a[rel~="external"] {
     color: $link-hover-color;
   }
 
-// https://fontawesome.com/license/free
+  // https://fontawesome.com/license/free
   &::after {
     content: "\f14c";
     display: inline-block;
@@ -16,7 +17,7 @@ a[rel~="external"] {
     font-style: normal;
     font-weight: normal;
     text-decoration: none;
-    padding-left: .4em;
+    padding-left: 0.4em;
     font-size: $font-size-base;
   }
 }
