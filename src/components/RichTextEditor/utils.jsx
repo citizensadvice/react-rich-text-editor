@@ -20,9 +20,13 @@ export const renderBlock = (props, editor, next) => {
     case 'span':
       return <span className="paragraph-inline" {...attributes}>{children}</span>;
     case 'bold':
-      return <b {...attributes}>{children}</b>;
+      return (
+        <b {...attributes}>{children}</b> || <strong {...attributes}>{children}</strong>
+      );
     case 'italic':
-      return <i {...attributes}>{children}</i>;
+      return (
+        <i {...attributes}>{children}</i> || <em {...attributes}>{children}</em>
+      );
     case 'underlined':
       return <u {...attributes}>{children}</u>;
     case 'bulletList':
@@ -79,11 +83,16 @@ export const renderMark = (props, editor, next) => {
 
   switch (mark.type) {
     case 'bold':
-      return <b {...attributes}>{children}</b>;
+      return (
+        <b {...attributes}>{children}</b> || <strong {...attributes}>{children}</strong>
+      );
     case 'italic':
-      return <i {...attributes}>{children}</i>;
+      return (
+        <i {...attributes}>{children}</i> || <em {...attributes}>{children}</em>
+      );
     case 'underlined':
       return <u {...attributes}>{children}</u>;
+    case 'bulletList':
     default:
       return next();
   }
@@ -118,6 +127,8 @@ const BLOCK_TAGS = {
   b: 'bold',
   i: 'italic',
   u: 'underlined',
+  em: 'bold',
+  strong: 'italic',
 };
 
 // Add a dictionary of mark tags.
@@ -125,6 +136,8 @@ const MARK_TAGS = {
   b: 'bold',
   i: 'italic',
   u: 'underlined',
+  em: 'italic',
+  strong: 'bold',
 };
 
 export const rules = [
@@ -179,7 +192,7 @@ export const rules = [
           case 'paragraph':
             return <p>{children}</p>;
           default:
-            return <p>{children}</p>;
+            return null;
         }
       }
       return null;
@@ -202,13 +215,14 @@ export const rules = [
       if (obj.object === 'mark') {
         switch (obj.type) {
           case 'bold':
-            return <strong>{children}</strong>;
+            return <b>{children}</b> || <strong>{children}</strong>;
           case 'italic':
-            return <em>{children}</em>;
+            return <i>{children}</i> || <em>{children}</em>;
           case 'underlined':
             return <u>{children}</u>;
+          case 'bulletList':
           default:
-            return <span>{children}</span>;
+            return null;
         }
       }
       return null;
