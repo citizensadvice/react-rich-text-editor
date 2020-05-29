@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Value } from 'slate';
 import { Editor } from 'slate-react';
-import Plain from 'slate-plain-serializer';
 import Html from 'slate-html-serializer';
 
 import { IS_BOLD_HOTKEY, IS_ITALIC_HOTKEY, IS_UNDERLINED_HOTKEY } from './constants';
@@ -24,7 +23,7 @@ class LabelledRichTextEditor extends React.Component {
     this.editor = React.createRef();
 
     this.state = {
-      editorValue: edit ? Plain.deserialize(text) : Value.fromJSON(initialValue),
+      editorValue: edit ? html.deserialize(text) : Value.fromJSON(initialValue),
       readOnly,
       isFullScreen: false,
       modalIsOpen: false,
@@ -81,7 +80,11 @@ class LabelledRichTextEditor extends React.Component {
 
   handleContainerBlur = () => {
     const { isFullScreen } = this.state;
+    const { onContainerBlur } = this.props;
     if (!isFullScreen) this.editor.blur();
+    if (onContainerBlur) {
+      onContainerBlur();
+    }
   }
 
   onEditorBlur = (e, editor, next) => {
@@ -97,7 +100,7 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   render() {
-    const { isInvalid, id, events, labelledby } = this.props;
+    const { isInvalid, id, events, labelledby, customClassName } = this.props;
     const { editorValue, isFullScreen, modalIsOpen, readOnly } = this.state;
     const { editor } = this;
     const activeEl = document.activeElement;
@@ -107,7 +110,7 @@ class LabelledRichTextEditor extends React.Component {
     });
 
     return (
-      <div className={`form-group ${stateClasses}`}>
+      <div className={stateClasses}>
         {modalIsOpen && (
           <EditorLinkModal
             closeModal={this.handleCloseModal}
@@ -120,7 +123,7 @@ class LabelledRichTextEditor extends React.Component {
           <div
             ref={this.containerRef}
             id={`${id}_editor_container`}
-            className="rte-form-control"
+            className={`rte-form-control ${customClassName}`}
             onBlur={this.handleContainerBlur}
           >
             {!!events && events}
@@ -167,14 +170,14 @@ LabelledRichTextEditor.propTypes = {
   text: PropTypes.string,
   labelledby: PropTypes.string,
   readOnly: PropTypes.bool,
+  handleEditorChange: PropTypes.func,
   onEditorChange: PropTypes.func,
+  onContainerBlur: PropTypes.func,
   hideLabel: PropTypes.string,
   wrapperTag: PropTypes.string,
+  customClassName: PropTypes.string,
   required: PropTypes.bool,
   edit: PropTypes.bool,
-  requiredGroup: PropTypes.bool,
-  labelClassName: PropTypes.string,
-  handleEditorChange: PropTypes.func,
   events: PropTypes.node,
 };
 
