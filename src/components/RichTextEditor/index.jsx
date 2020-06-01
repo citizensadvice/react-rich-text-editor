@@ -15,7 +15,7 @@ import EditorLinkModal from './components/EditorLinkModal/EditorLinkModal';
 
 const html = new Html({ rules });
 
-class LabelledRichTextEditor extends React.Component {
+class RichTextEditor extends React.Component {
   constructor(props) {
     super(props);
     const { edit, text, readOnly } = this.props;
@@ -43,17 +43,18 @@ class LabelledRichTextEditor extends React.Component {
     this.setState({ modalIsOpen: false });
   }
 
-  onEditorChange = (value) => {
+  onEditorChange = (value, text) => {
     const { onEditorChange } = this.props;
-    if (onEditorChange) onEditorChange(value);
+    if (onEditorChange) onEditorChange(value, text);
   }
 
   handleEditorChange = ({ value }) => {
     const { editorValue } = this.state;
+    // console.log(value);
 
     this.setState(
       { editorValue: value },
-      () => this.onEditorChange(html.serialize(editorValue)),
+      () => this.onEditorChange(html.serialize(editorValue), editorValue.document.text),
     );
   }
 
@@ -78,12 +79,14 @@ class LabelledRichTextEditor extends React.Component {
     editor.toggleMark(mark);
   }
 
-  handleContainerBlur = () => {
-    const { isFullScreen } = this.state;
+  handleContainerBlur = async () => {
+    const { isFullScreen, editorValue } = this.state;
     const { onContainerBlur } = this.props;
-    if (!isFullScreen) this.editor.blur();
-    if (onContainerBlur) {
-      onContainerBlur();
+    if (!isFullScreen) {
+      await this.editor.blur();
+      if (onContainerBlur) {
+        onContainerBlur(editorValue.document.text);
+      }
     }
   }
 
@@ -164,27 +167,22 @@ class LabelledRichTextEditor extends React.Component {
   }
 }
 
-LabelledRichTextEditor.propTypes = {
+RichTextEditor.propTypes = {
   isInvalid: PropTypes.bool,
   id: PropTypes.string,
   text: PropTypes.string,
   labelledby: PropTypes.string,
   readOnly: PropTypes.bool,
-  handleEditorChange: PropTypes.func,
-  onEditorChange: PropTypes.func,
   onContainerBlur: PropTypes.func,
-  hideLabel: PropTypes.string,
-  wrapperTag: PropTypes.string,
+  onEditorChange: PropTypes.func,
   customClassName: PropTypes.string,
-  required: PropTypes.bool,
   edit: PropTypes.bool,
   events: PropTypes.node,
 };
 
-LabelledRichTextEditor.defaultProps = {
+RichTextEditor.defaultProps = {
   id: 'editor',
-  required: false,
   readOnly: false,
 };
 
-export default LabelledRichTextEditor;
+export default RichTextEditor;
