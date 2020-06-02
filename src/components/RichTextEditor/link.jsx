@@ -34,6 +34,16 @@ const processedHtml = (html, transfer) => {
       const u = document.createElement('u');
       u.innerHTML = span.innerHTML;
       span.parentNode.replaceChild(u, span);
+
+      // add one white space before and one after the <u/> tag because it sticks its contents to its siblings
+      const space = document.createTextNode('\u00A0');
+      u.parentNode.insertBefore(space, u.nextSibling);
+      u.parentNode.insertBefore(document.createTextNode('\u00A0'), u);
+
+      // remove white space if it is first child
+      if (!u.parentNode.firstChild.innerHTML) {
+        u.parentNode.removeChild(u.parentNode.firstChild);
+      }
     });
   }
   return body.outerHTML;
