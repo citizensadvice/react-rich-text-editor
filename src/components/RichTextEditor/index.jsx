@@ -59,12 +59,20 @@ class RichTextEditor extends React.Component {
   }
 
   onEditorKeyDown = (event, editor, next) => { // eslint-disable-line consistent-return
+    // trigger focused and unfocused states keyboard backward navigation
     if (event.key === 'Tab' && event.shiftKey === true) {
       this.setState({ isKeyShiftTab: true });
     }
 
+    // delete empty blocks with backspace
+    const { focus: { offset } } = editor.value.selection;
+    if (event.key === 'Backspace' && offset === 0) {
+      editor.unwrapBlock();
+    }
+
     let mark;
 
+    // handle marks
     if (IS_BOLD_HOTKEY(event)) {
       mark = 'bold';
     } else if (IS_ITALIC_HOTKEY(event)) {
