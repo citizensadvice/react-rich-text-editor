@@ -111,12 +111,13 @@ class RichTextEditor extends React.Component {
   }
 
   render() {
-    const { isInvalid, id, events, labelledby, customClassName } = this.props;
+    const { isInvalid, id, events, labelledby } = this.props;
     const { editorValue, isFullScreen, modalIsOpen, readOnly } = this.state;
     const { editor } = this;
     const activeEl = document.activeElement;
 
     const stateClasses = classNames({
+      'is-invalid': isInvalid,
       'is-fullscreen': isFullScreen,
     });
 
@@ -134,7 +135,7 @@ class RichTextEditor extends React.Component {
           <div
             ref={this.containerRef}
             id={`${id}_editor_container`}
-            className={`rte-form-control ${customClassName}`}
+            className="rte-form-control"
             onBlur={this.handleContainerBlur}
           >
             {!!events && events}
@@ -183,7 +184,6 @@ RichTextEditor.propTypes = {
   readOnly: PropTypes.bool,
   onContainerBlur: PropTypes.func,
   onEditorChange: PropTypes.func,
-  customClassName: PropTypes.string,
   edit: PropTypes.bool,
   events: PropTypes.node,
 };
