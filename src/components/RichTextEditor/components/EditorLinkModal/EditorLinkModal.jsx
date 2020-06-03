@@ -97,7 +97,7 @@ function EditorLinkModal(props) {
               <input
                 type="text"
                 id="rte-link-text"
-                className="form-control"
+                className="rte-link form-control"
                 name="rte-link-text"
                 value={inputText}
                 onChange={updateText}
@@ -108,7 +108,7 @@ function EditorLinkModal(props) {
                 aria-invalid={invalidText}
               />
               {invalidText && (
-                <span id="rte-link-text_error" className="form-control-invalid">
+                <span id="rte-link-text_error" className="rte-link form-control-invalid">
                   Please complete this field
                 </span>
               )}

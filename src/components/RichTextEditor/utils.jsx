@@ -19,12 +19,6 @@ export const renderBlock = (props, editor, next) => {
       return <p {...attributes}>{children}</p>;
     case 'span':
       return <span className="paragraph-inline" {...attributes}>{children}</span>;
-    case 'bold':
-      return <b {...attributes}>{children}</b>;
-    case 'italic':
-      return <i {...attributes}>{children}</i>;
-    case 'underlined':
-      return <u {...attributes}>{children}</u>;
     case 'bulletList':
       return <ul {...attributes}>{children}</ul>;
     case 'numberedList':
@@ -76,7 +70,6 @@ export const renderBlock = (props, editor, next) => {
 
 export const renderMark = (props, editor, next) => {
   const { children, mark, attributes } = props;
-
   switch (mark.type) {
     case 'bold':
       return <b {...attributes}>{children}</b>;
@@ -115,23 +108,30 @@ const BLOCK_TAGS = {
   h4: 'heading-4',
   h5: 'heading-5',
   h6: 'heading-6',
-  b: 'bold',
-  i: 'italic',
-  u: 'underlined',
 };
 
 // Add a dictionary of mark tags.
 const MARK_TAGS = {
   b: 'bold',
+  strong: 'bold',
   i: 'italic',
+  em: 'italic',
   u: 'underlined',
 };
 
 export const rules = [
-  // Rules for handling blocks
   {
     deserialize(el, next) {
       const type = BLOCK_TAGS[el.tagName.toLowerCase()];
+      const mark = MARK_TAGS[el.tagName.toLowerCase()];
+      if (mark) {
+        return {
+          object: 'text',
+          text: el.textContent,
+          marks: [mark],
+        };
+      }
+
       if (!type) {
         return {
           object: 'text',
@@ -148,13 +148,20 @@ export const rules = [
       };
     },
     serialize(obj, children) {
-      // console.log(obj.toJS());
-      if (
-        obj.object === 'block'
-        || obj.object === 'inline'
-        || obj.object === 'text'
-        || obj.object === 'string'
-      ) {
+      if (obj.object === 'mark') {
+        switch (obj.type) {
+          case 'bold':
+            return <strong>{children}</strong>;
+          case 'italic':
+            return <em>{children}</em>;
+          case 'underlined':
+            return <u>{children}</u>;
+          default:
+            return <b>{children}</b>;
+        }
+      }
+
+      if (obj.object === 'block') {
         switch (obj.type) {
           case 'bulletList':
             return <ul>{children}</ul>;
@@ -180,35 +187,6 @@ export const rules = [
             return <p>{children}</p>;
           default:
             return <p>{children}</p>;
-        }
-      }
-      return null;
-    },
-  },
-  // Rules for handling marks
-  {
-    deserialize(el, next) {
-      const type = MARK_TAGS[el.tagName.toLowerCase()];
-      if (type) {
-        return {
-          object: 'mark',
-          type,
-          nodes: next(el.childNodes),
-        };
-      }
-      return null;
-    },
-    serialize(obj, children) {
-      if (obj.object === 'mark') {
-        switch (obj.type) {
-          case 'bold':
-            return <strong>{children}</strong>;
-          case 'italic':
-            return <em>{children}</em>;
-          case 'underlined':
-            return <u>{children}</u>;
-          default:
-            return <span>{children}</span>;
         }
       }
       return null;

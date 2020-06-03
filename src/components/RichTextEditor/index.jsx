@@ -15,7 +15,7 @@ import EditorLinkModal from './components/EditorLinkModal/EditorLinkModal';
 
 const html = new Html({ rules });
 
-class LabelledRichTextEditor extends React.Component {
+class RichTextEditor extends React.Component {
   constructor(props) {
     super(props);
     const { edit, text, readOnly } = this.props;
@@ -43,9 +43,9 @@ class LabelledRichTextEditor extends React.Component {
     this.setState({ modalIsOpen: false });
   }
 
-  onEditorChange = (value) => {
+  onEditorChange = (value, text) => {
     const { onEditorChange } = this.props;
-    if (onEditorChange) onEditorChange(value);
+    if (onEditorChange) onEditorChange(value, text);
   }
 
   handleEditorChange = ({ value }) => {
@@ -53,17 +53,25 @@ class LabelledRichTextEditor extends React.Component {
 
     this.setState(
       { editorValue: value },
-      () => this.onEditorChange(html.serialize(editorValue)),
+      () => this.onEditorChange(html.serialize(editorValue), editorValue.document.text),
     );
   }
 
   onEditorKeyDown = (event, editor, next) => { // eslint-disable-line consistent-return
+    // trigger focused and unfocused states keyboard backward navigation
     if (event.key === 'Tab' && event.shiftKey === true) {
       this.setState({ isKeyShiftTab: true });
     }
 
+    // delete empty blocks with backspace
+    const { focus: { offset } } = editor.value.selection;
+    if (event.key === 'Backspace' && offset === 0) {
+      editor.unwrapBlock();
+    }
+
     let mark;
 
+    // handle marks
     if (IS_BOLD_HOTKEY(event)) {
       mark = 'bold';
     } else if (IS_ITALIC_HOTKEY(event)) {
@@ -78,12 +86,14 @@ class LabelledRichTextEditor extends React.Component {
     editor.toggleMark(mark);
   }
 
-  handleContainerBlur = () => {
-    const { isFullScreen } = this.state;
+  handleContainerBlur = async () => {
+    const { isFullScreen, editorValue } = this.state;
     const { onContainerBlur } = this.props;
-    if (!isFullScreen) this.editor.blur();
-    if (onContainerBlur) {
-      onContainerBlur();
+    if (!isFullScreen) {
+      await this.editor.blur();
+      if (onContainerBlur) {
+        onContainerBlur(editorValue.document.text);
+      }
     }
   }
 
@@ -100,12 +110,13 @@ class LabelledRichTextEditor extends React.Component {
   }
 
   render() {
-    const { isInvalid, id, events, labelledby, customClassName } = this.props;
+    const { isInvalid, id, events, labelledby } = this.props;
     const { editorValue, isFullScreen, modalIsOpen, readOnly } = this.state;
     const { editor } = this;
     const activeEl = document.activeElement;
 
     const stateClasses = classNames({
+      'is-invalid': isInvalid,
       'is-fullscreen': isFullScreen,
     });
 
@@ -123,7 +134,7 @@ class LabelledRichTextEditor extends React.Component {
           <div
             ref={this.containerRef}
             id={`${id}_editor_container`}
-            className={`rte-form-control ${customClassName}`}
+            className="rte-form-control"
             onBlur={this.handleContainerBlur}
           >
             {!!events && events}
@@ -164,27 +175,21 @@ class LabelledRichTextEditor extends React.Component {
   }
 }
 
-LabelledRichTextEditor.propTypes = {
+RichTextEditor.propTypes = {
   isInvalid: PropTypes.bool,
   id: PropTypes.string,
   text: PropTypes.string,
   labelledby: PropTypes.string,
   readOnly: PropTypes.bool,
-  handleEditorChange: PropTypes.func,
-  onEditorChange: PropTypes.func,
   onContainerBlur: PropTypes.func,
-  hideLabel: PropTypes.string,
-  wrapperTag: PropTypes.string,
-  customClassName: PropTypes.string,
-  required: PropTypes.bool,
+  onEditorChange: PropTypes.func,
   edit: PropTypes.bool,
   events: PropTypes.node,
 };
 
-LabelledRichTextEditor.defaultProps = {
+RichTextEditor.defaultProps = {
   id: 'editor',
-  required: false,
   readOnly: false,
 };
 
-export default LabelledRichTextEditor;
+export default RichTextEditor;
