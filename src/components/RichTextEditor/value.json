@@ -9,9 +9,16 @@
       "nodes": [
         {
           "object": "text",
-          "text": ""
+          "leaves": [
+              {
+                  "object": "leaf",
+                  "text": "",
+                  "marks": []
+              }
+          ]
         }
-      ]
+      ],
+      "marks": []
     }]
   }
 }
