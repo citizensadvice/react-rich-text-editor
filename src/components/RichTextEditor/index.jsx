@@ -50,7 +50,6 @@ class RichTextEditor extends React.Component {
 
   handleEditorChange = ({ value }) => {
     const { editorValue } = this.state;
-    // console.log(value);
 
     this.setState(
       { editorValue: value },
