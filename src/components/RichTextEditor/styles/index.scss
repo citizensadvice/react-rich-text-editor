@@ -103,11 +103,6 @@
     border-color: $color-lavender;
   }
 
-  // All invalid inputs will have this attribute
-  &.is-invalid {
-    border-color: $color-tomato;
-  }
-
   &:disabled {
     &::placeholder {
       color: $color-black-l80;
@@ -195,6 +190,12 @@
 .icon-svg {
   width: 100%;
   height: 100%;
+}
+
+.is-invalid {
+  .rte-form-control:not(:focus-within) {
+    border: $px1 solid $color-tomato;
+  }
 }
 
 .is-fullscreen {
