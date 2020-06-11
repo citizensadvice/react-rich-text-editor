@@ -22,30 +22,56 @@ export function unwrapLink(editor) {
 
 export const hasLinks = (value) => value.inlines.some((inline) => inline.type === 'link');
 
-// underline is not coming as a <u/> tag and it is not cleaned up by wordFilter
-// convert underlined text coming as <span/> into <u/>
+// underline and italic are not coming as a <u/> and <i/> tags so are not cleaned up by wordFilter
+// convert underlined and italic text coming as <span/> into <u/> and <i/>
+const replaceSpanWithElement = (element, span) => {
+  element.innerHTML = span.innerHTML;
+  if (span.parentNode) {
+    span.parentNode.replaceChild(element, span);
+    // add one white space before and one after the <element/> tag because it sticks its contents to its siblings
+    const space = document.createTextNode('\u00A0');
+    element.parentNode.insertBefore(space, element.nextSibling);
+    element.parentNode.insertBefore(document.createTextNode('\u00A0'), element);
+
+    // remove white space if it is first child
+    if (!element.parentNode.firstChild.innerHTML) {
+      element.parentNode.removeChild(element.parentNode.firstChild);
+    }
+  }
+};
+
 const processedHtml = (html, transfer) => {
   const body = html.parseHtml(transfer.html);
   const array = Array.from(body.querySelectorAll('span'));
   const underline = array.filter((span) => span.style.textDecoration === 'underline');
+  const italic = array.filter((span) => span.style.fontStyle === 'italic');
+  const bold = Array.from(body.querySelectorAll('b'))
+    .filter((b) => b.style.fontWeight === 'normal');
 
   if (underline && !!underline.length) {
     underline.forEach((span) => {
       const u = document.createElement('u');
-      u.innerHTML = span.innerHTML;
-      span.parentNode.replaceChild(u, span);
-
-      // add one white space before and one after the <u/> tag because it sticks its contents to its siblings
-      const space = document.createTextNode('\u00A0');
-      u.parentNode.insertBefore(space, u.nextSibling);
-      u.parentNode.insertBefore(document.createTextNode('\u00A0'), u);
-
-      // remove white space if it is first child
-      if (!u.parentNode.firstChild.innerHTML) {
-        u.parentNode.removeChild(u.parentNode.firstChild);
+      replaceSpanWithElement(u, span);
+    });
+  }
+  if (italic && !!italic.length) {
+    italic.forEach((span) => {
+      const i = document.createElement('i');
+      replaceSpanWithElement(i, span);
+      if (i.parentNode && i.parentNode.tagName === 'P') {
+        i.parentNode.parentNode.insertBefore(i, i.parentNode);
+        i.parentNode.removeChild(i.nextSibling);
       }
     });
   }
+
+  // activates <b/> tags format, TODO: uncomment when deserialization works
+  // if (bold && !!bold.length) {
+  //   bold.forEach((b) => {
+  //     b.removeAttribute('style');
+  //     b.removeAttribute('id');
+  //   });
+  // }
   return body.outerHTML;
 };
 

@@ -14,9 +14,10 @@ const onClick = (e, href) => {
 
 export const renderBlock = (props, editor, next) => {
   const { attributes, children, node } = props;
+  const className = node.data.get('className');
   switch (node.type) {
     case 'paragraph':
-      return <p {...attributes}>{children}</p>;
+      return <p className={className} {...attributes}>{children}</p>;
     case 'span':
       return <span className="paragraph-inline" {...attributes}>{children}</span>;
     case 'bulletList':
@@ -30,11 +31,11 @@ export const renderBlock = (props, editor, next) => {
     case 'indentIncrease':
       return <div className="rte-indent-increase" {...attributes}>{children}</div>;
     case 'paragraphLeft':
-      return <div className="rte-paragraph-left" {...attributes}>{children}</div>;
+      return <p className="rte-paragraph-left" {...attributes}>{children}</p>;
     case 'paragraphCentre':
-      return <div className="rte-paragraph-center" {...attributes}>{children}</div>;
+      return <p className="rte-paragraph-center" {...attributes}>{children}</p>;
     case 'paragraphRight':
-      return <div className="rte-paragraph-right" {...attributes}>{children}</div>;
+      return <p className="rte-paragraph-right" {...attributes}>{children}</p>;
     case 'link': {
       const { ...remainingAttributes } = attributes;
       const { data, nodes } = node;
@@ -121,6 +122,7 @@ const MARK_TAGS = {
 
 export const rules = [
   {
+    // what we get when we retrieve data
     deserialize(el, next) {
       const type = BLOCK_TAGS[el.tagName.toLowerCase()];
       const mark = MARK_TAGS[el.tagName.toLowerCase()];
@@ -147,13 +149,14 @@ export const rules = [
         nodes: next(el.childNodes),
       };
     },
+    // what we send when we send data
     serialize(obj, children) {
       if (obj.object === 'mark') {
         switch (obj.type) {
           case 'bold':
-            return <strong>{children}</strong>;
+            return <b>{children}</b>;
           case 'italic':
-            return <em>{children}</em>;
+            return <i>{children}</i>;
           case 'underlined':
             return <u>{children}</u>;
           default:
@@ -162,6 +165,7 @@ export const rules = [
       }
 
       if (obj.object === 'block') {
+        console.log(obj.type);
         switch (obj.type) {
           case 'bulletList':
             return <ul>{children}</ul>;
@@ -172,19 +176,33 @@ export const rules = [
           case 'list-item-child':
             return <span>{children}</span>;
           case 'indentIncrease':
-            return <div className="rte-indent-increase">{children}</div>;
+            return <div className={obj.data.get('className')}>{children}</div>;
           case 'paragraphLeft':
-            return <div className="rte-paragraph-left">{children}</div>;
+            return <p className="rte-paragraph-left">{children}</p>;
           case 'paragraphCentre':
-            return <div className="rte-paragraph-center">{children}</div>;
+            return <p className="rte-paragraph-center">{children}</p>;
           case 'paragraphRight':
-            return <div className="rte-paragraph-right">{children}</div>;
-          case 'link':
-            return <a href={obj.data.href}>{children}</a>;
+            return <p className="rte-paragraph-right">{children}</p>;
+          case 'link': {
+            const { data, nodes } = obj;
+            const hasText = nodes.some((o) => o.text.length > 0);
+            const href = data.get('href');
+            const textNewWindow = Array.from(children)[0][0].includes('new window');
+            return (
+              <LinkNewWindow
+                href={href}
+                textNewWindow={textNewWindow}
+                onClick={(e) => onClick(e, href)}
+                className={`${!hasText ? 'rte-link-new-window-no-text' : 'rte-link-new-window'}`}
+              >
+                {children}
+              </LinkNewWindow>
+            );
+          }
           case 'div':
             return <div>{children}</div>;
           case 'paragraph':
-            return <p>{children}</p>;
+            return <p className={obj.data.get('className')}>{children}</p>;
           default:
             return <p>{children}</p>;
         }
