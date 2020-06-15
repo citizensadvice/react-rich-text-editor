@@ -5,7 +5,7 @@ const safeHost = /(^|\.)citizensadvice\.org\.uk$/;
 
 const { location } = window;
 
-function LinkNewWindow({ children, href, ...rest }) {
+function LinkNewWindow({ children, href, textNewWindow, ...rest }) {
   const rel = ['noopener'];
   const urlObject = new URL(href, location.href);
   if (new URL(location.href).origin !== urlObject.origin) {
@@ -19,7 +19,7 @@ function LinkNewWindow({ children, href, ...rest }) {
     // eslint-disable-next-line react/jsx-no-target-blank
     <a href={href} rel={rel.join(' ')} target="_blank" {...rest}>
       {children || href}
-      <span className="sr-only"> (new window)</span>
+      {!textNewWindow && <span className="sr-only"> (new window)</span>}
     </a>
   );
 }
@@ -27,6 +27,11 @@ function LinkNewWindow({ children, href, ...rest }) {
 LinkNewWindow.propTypes = {
   children: PropTypes.node,
   href: PropTypes.string.isRequired,
+  textNewWindow: PropTypes.bool,
+};
+
+LinkNewWindow.defaultProps = {
+  textNewWindow: false,
 };
 
 export default LinkNewWindow;
